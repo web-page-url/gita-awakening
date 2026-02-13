@@ -3,6 +3,7 @@
 import React from "react";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, Sparkles } from "lucide-react";
+import Link from "next/link";
 
 export default function Hero() {
     const { scrollY } = useScroll();
@@ -84,22 +85,26 @@ export default function Hero() {
                     transition={{ delay: 0.9 }}
                     className="flex flex-col sm:flex-row gap-6 mt-8 w-full sm:w-auto px-6"
                 >
-                    <motion.button
-                        whileHover={{ scale: 1.05, boxShadow: "0 0 25px rgba(255, 153, 51, 0.4)" }}
-                        whileTap={{ scale: 0.98 }}
-                        className="px-10 py-5 bg-saffron text-white rounded-2xl font-bold shadow-2xl shadow-saffron/20 hover:bg-saffron/90 transition-all text-xl flex items-center justify-center gap-3 group"
-                    >
-                        Start Today's Journey
-                        <ArrowRight className="group-hover:translate-x-1 transition-transform" />
-                    </motion.button>
+                    <Link href="/daily-wisdom">
+                        <motion.button
+                            whileHover={{ scale: 1.05, boxShadow: "0 0 25px rgba(255, 153, 51, 0.4)" }}
+                            whileTap={{ scale: 0.98 }}
+                            className="w-full sm:w-auto px-10 py-5 bg-saffron text-white rounded-2xl font-bold shadow-2xl shadow-saffron/20 hover:bg-saffron/90 transition-all text-xl flex items-center justify-center gap-3 group"
+                        >
+                            Start Today's Journey
+                            <ArrowRight className="group-hover:translate-x-1 transition-transform" />
+                        </motion.button>
+                    </Link>
 
-                    <motion.button
-                        whileHover={{ scale: 1.05, backgroundColor: "rgba(212, 175, 55, 0.1)" }}
-                        whileTap={{ scale: 0.98 }}
-                        className="px-10 py-5 border-2 border-gold/30 text-deep-blue dark:text-ivory rounded-2xl font-bold backdrop-blur-sm transition-all text-xl flex items-center justify-center"
-                    >
-                        📖 Explore Chapters
-                    </motion.button>
+                    <Link href="/chapters">
+                        <motion.button
+                            whileHover={{ scale: 1.05, backgroundColor: "rgba(212, 175, 55, 0.1)" }}
+                            whileTap={{ scale: 0.98 }}
+                            className="w-full sm:w-auto px-10 py-5 border-2 border-gold/30 text-deep-blue dark:text-ivory rounded-2xl font-bold backdrop-blur-sm transition-all text-xl flex items-center justify-center"
+                        >
+                            📖 Explore Chapters
+                        </motion.button>
+                    </Link>
                 </motion.div>
             </motion.div>
 

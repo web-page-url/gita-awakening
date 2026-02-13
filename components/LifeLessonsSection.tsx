@@ -3,39 +3,46 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Shield, Target, Zap, Waves, Compass, Heart } from "lucide-react";
+import Link from "next/link";
 
 const lessons = [
     {
+        slug: "overthinking",
         title: "Overthinking",
         icon: <Zap className="text-blue-500" />,
         description: "Learn to silence the mind's endless chatter through detachment.",
         color: "bg-blue-50/50 dark:bg-blue-900/10"
     },
     {
+        slug: "fear-anxiety",
         title: "Fear & Anxiety",
         icon: <Shield className="text-red-500" />,
         description: "Discover the eternal nature of the soul to conquer the fear of death and failure.",
         color: "bg-red-50/50 dark:bg-red-900/10"
     },
     {
+        slug: "discipline",
         title: "Discipline",
         icon: <Target className="text-green-500" />,
         description: "Master your senses and steer your chariot towards your dharma.",
         color: "bg-green-50/50 dark:bg-green-900/10"
     },
     {
+        slug: "inner-peace",
         title: "Inner Peace",
         icon: <Waves className="text-teal-500" />,
         description: "Find stillness amidst the storms of life through equanimity.",
         color: "bg-teal-50/50 dark:bg-teal-900/10"
     },
     {
+        slug: "purpose",
         title: "Purpose",
         icon: <Compass className="text-purple-500" />,
         description: "Identify your duty and perform it without attachment to results.",
         color: "bg-purple-50/50 dark:bg-purple-900/10"
     },
     {
+        slug: "love-devotion",
         title: "Love & Devotion",
         icon: <Heart className="text-pink-500" />,
         description: "Surrender your ego and experience the infinite love of the divine.",
@@ -58,28 +65,29 @@ export default function LifeLessonsSection() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                     {lessons.map((lesson, index) => (
-                        <motion.div
-                            key={lesson.title}
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            transition={{ delay: index * 0.1 }}
-                            whileHover={{ scale: 1.02 }}
-                            className={`p-8 rounded-3xl border border-gold/5 sacred-glow cursor-pointer transition-all ${lesson.color}`}
-                        >
-                            <div className="w-14 h-14 rounded-2xl bg-white dark:bg-deep-blue flex items-center justify-center mb-6 shadow-sm">
-                                {lesson.icon}
-                            </div>
-                            <h3 className="text-2xl font-serif font-bold text-deep-blue dark:text-ivory mb-3">
-                                {lesson.title}
-                            </h3>
-                            <p className="text-deep-blue/70 dark:text-ivory/70 leading-relaxed font-light">
-                                {lesson.description}
-                            </p>
+                        <Link href={`/life-lessons/${lesson.slug}`} key={lesson.slug} className="group">
+                            <motion.div
+                                initial={{ opacity: 0, y: 20 }}
+                                whileInView={{ opacity: 1, y: 0 }}
+                                transition={{ delay: index * 0.1 }}
+                                whileHover={{ scale: 1.02 }}
+                                className={`p-8 rounded-3xl border border-gold/5 sacred-glow cursor-pointer transition-all h-full ${lesson.color}`}
+                            >
+                                <div className="w-14 h-14 rounded-2xl bg-white dark:bg-deep-blue flex items-center justify-center mb-6 shadow-sm">
+                                    {lesson.icon}
+                                </div>
+                                <h3 className="text-2xl font-serif font-bold text-deep-blue dark:text-ivory mb-3">
+                                    {lesson.title}
+                                </h3>
+                                <p className="text-deep-blue/70 dark:text-ivory/70 leading-relaxed font-light">
+                                    {lesson.description}
+                                </p>
 
-                            <div className="mt-6 flex items-center gap-2 text-saffron text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
-                                Explore Verses →
-                            </div>
-                        </motion.div>
+                                <div className="mt-6 flex items-center gap-2 text-saffron text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
+                                    Explore Verses →
+                                </div>
+                            </motion.div>
+                        </Link>
                     ))}
                 </div>
 
