@@ -1,1 +1,382 @@
-gita-awakening
+🕉️ PROJECT MASTER PROMPT
+
+(You can give this to your AI builder)
+
+🌟 PROJECT NAME
+
+“Gita Awakening” — The Divine Wisdom Experience
+
+Premium spiritual web application inspired by the teachings of the Bhagavad Gita.
+
+🎯 CORE VISION
+
+Create a visually breathtaking, emotionally immersive, highly intuitive Bhagavad Gita app that:
+
+Feels sacred and premium
+
+Is extremely simple to use
+
+Makes users return daily for wisdom
+
+Presents lessons in a modern, practical way
+
+Uses holy color themes (Saffron, Gold, Deep Blue, Ivory)
+
+Is fully responsive (mobile-first)
+
+Feels like a trillion-dollar spiritual product
+
+This is NOT a PDF reader.
+This is a Spiritual Experience Platform.
+
+🎨 DESIGN SYSTEM
+🌈 Holy Color Palette
+
+Primary:
+
+Saffron (#FF9933)
+
+Deep Royal Blue (#0B1C3D)
+
+Gold Gradient (#D4AF37 → #FFD700)
+
+Secondary:
+
+Soft Ivory (#FDF6E3)
+
+Lotus Pink accents
+
+Subtle glowing shadows
+
+✨ Visual Effects
+
+Soft golden glow animations
+
+Subtle floating particles (like divine aura)
+
+Smooth fade transitions
+
+Gentle parallax scroll
+
+Elegant serif + modern sans font pairing
+
+🏠 NAVBAR (Top Section)
+
+Sticky, semi-transparent, blurred background.
+
+Left:
+🕉️ Logo (Golden Om Symbol + App Name)
+
+Center Menu:
+
+Home
+
+Daily Wisdom
+
+Chapters
+
+Life Lessons
+
+Audio Mode
+
+My Reflections
+
+AI Krishna Guide
+
+Right:
+
+Search icon
+
+Profile
+
+Dark/Light Holy Mode toggle
+
+Mobile:
+
+Clean hamburger menu
+
+Smooth slide animation
+
+🌄 HERO SECTION (Home Page)
+4
+
+Full-screen immersive hero.
+
+Background:
+Soft animated golden aura + divine illustration of Krishna (minimal, elegant, not cartoonish).
+
+Headline:
+“Awaken the Warrior Within.”
+
+Subheadline:
+Ancient Wisdom. Modern Life. Daily Transformation.
+
+CTA Buttons:
+
+🌟 Start Today’s Wisdom
+
+📖 Explore Chapters
+
+Subtle floating animation on buttons.
+
+🌞 DAILY WISDOM SECTION
+
+Card-based layout.
+
+Each card includes:
+
+Sanskrit Verse
+
+Transliteration
+
+Simple Hindi meaning
+
+Simple English meaning
+
+“Apply Today” section
+
+Reflect button
+
+Interaction:
+When user taps “Reflect” → Card expands beautifully with soft glow.
+
+Gamified but meaningful:
+
+Daily streak counter
+
+Soft celebratory animation (lotus bloom effect)
+
+📚 CHAPTERS SECTION
+
+Grid Layout (18 Beautiful Cards)
+
+Each card:
+
+Chapter Name
+
+Chapter Theme
+
+Minimal sacred illustration
+
+Gold border hover animation
+
+Inside Chapter Page:
+Scrollable verses with:
+
+Audio button
+
+Bookmark
+
+Share
+
+Highlight feature
+
+💎 LIFE LESSONS SECTION
+
+Categorized Wisdom:
+
+Overthinking
+
+Fear
+
+Discipline
+
+Duty
+
+Detachment
+
+Leadership
+
+Success without attachment
+
+User clicks a life problem → App shows:
+
+Relevant verses
+
+Modern explanation
+
+Actionable steps
+
+This makes it practical and addictive in a healthy way.
+
+🎧 AUDIO MODE
+4
+
+Full-screen audio experience.
+
+Features:
+
+Sanskrit chanting
+
+Calm instrumental background
+
+Play / Pause
+
+Loop mode
+
+Timer mode (10 / 20 / 30 min)
+
+Background:
+Dark blue with slow golden particles.
+
+🤖 AI KRISHNA GUIDE
+
+Chat-style interface.
+
+User types:
+“I feel anxious about my future.”
+
+Response:
+
+Relevant verse
+
+Simple explanation
+
+Gentle guidance tone
+
+“Apply this today” bullet points
+
+Design:
+Dark theme.
+Golden message bubbles.
+Soft typing animation.
+
+📝 MY REFLECTIONS
+
+Personal sacred journal.
+
+Features:
+
+Save favorite verses
+
+Add private notes
+
+Mood tracker
+
+Progress insights
+
+Elegant notebook-style layout.
+
+🔥 MICRO INTERACTIONS
+
+Lotus bloom on achievement
+
+Golden ripple effect on tap
+
+Smooth transitions everywhere
+
+Subtle background chanting ambience (optional toggle)
+
+📱 RESPONSIVENESS
+
+Mobile-first design.
+
+Large readable fonts
+
+One-handed navigation
+
+Bottom navigation bar on mobile
+
+Smooth swipe gestures
+
+Tablet and desktop:
+
+Centered divine reading layout
+
+Wide margins for peaceful reading experience
+
+🧠 USER RETENTION (Healthy Engagement)
+
+Instead of addictive manipulation:
+
+Daily wisdom notification
+
+Streak encouragement
+
+Progress insights
+
+Personalized lesson recommendations
+
+Calm reminder if inactive
+
+🛠 TECH STACK
+
+Frontend:
+
+Next.js  (App Router)
+
+Tailwind CSS
+
+Framer Motion
+
+ShadCN UI
+
+
+
+AI integration ( Gemini)
+
+Audio:
+
+HTML5 Audio
+
+Preloaded Sanskrit chants
+
+🔻 FOOTER SECTION
+
+Elegant deep blue background.
+
+Columns:
+
+About
+
+Vision
+
+Mission
+
+Explore
+
+Chapters
+
+Daily Wisdom
+
+Audio
+
+Resources
+
+About Bhagavad Gita
+
+How to Practice
+
+Contact
+
+Bottom:
+Golden line divider
+“Made with devotion for the modern warrior.”
+
+Minimal Om symbol watermark.
+
+💰 FUTURE MONETIZATION
+
+Premium Audio Library
+
+Personalized AI Guidance
+
+Advanced Reflections Analytics
+
+Offline Mode
+
+Guided 30-Day Gita Challenge
+
+FINAL POSITIONING
+
+This is not just an app.
+
+This is:
+
+A daily ritual
+
+A calm sanctuary
+
+A spiritual growth companion
+
+A modern warrior’s guide
