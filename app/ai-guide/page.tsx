@@ -1,34 +1,85 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import * as React from "react";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { Send, Sparkles, User, ArrowLeft, Bot, MessageCircle } from "lucide-react";
+import { Bot, User, Send, ArrowLeft, Sparkles } from "lucide-react";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const INITIAL_MESSAGE = {
-    id: 1,
-    text: "Welcome, seeker. I am your AI Krishna Guide. What troubles your heart today?",
-    sender: "ai",
-    time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-};
+const INITIAL_MESSAGE_TEXT = "Welcome, seeker. I am your AI Krishna Guide. What troubles your heart today?";
 
 export default function AIGuide() {
-    const [messages, setMessages] = useState([INITIAL_MESSAGE]);
-    const [input, setInput] = useState("");
-    const [isTyping, setIsTyping] = useState(false);
-    const scrollRef = useRef<HTMLDivElement>(null);
+    const [mounted, setMounted] = React.useState(false);
+    const [messages, setMessages] = React.useState<{ id: number; text: string; sender: string; time: string }[]>([]);
+    const [input, setInput] = React.useState("");
+    const [isTyping, setIsTyping] = React.useState(false);
+    const scrollRef = React.useRef<HTMLDivElement>(null);
 
-    useEffect(() => {
+    React.useEffect(() => {
+        setMounted(true);
+        setMessages([{
+            id: 1,
+            text: INITIAL_MESSAGE_TEXT,
+            sender: "ai",
+            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+        }]);
+    }, []);
+
+    React.useEffect(() => {
         if (scrollRef.current) {
             scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
         }
     }, [messages, isTyping]);
 
-    const handleSend = () => {
-        if (!input.trim()) return;
+    const callGeminiAPI = async (prompt: string): Promise<string> => {
+        const GEMINI_API_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
+
+        if (!GEMINI_API_KEY) {
+            return "Seeker, my divine connection is momentarily veiled by the clouds of technical Maya. Remember, the true answer lies within your own soul. (API key missing)";
+        }
+
+        try {
+            const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
+            const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
+
+            const systemPrompt = `You are the AI Krishna Guide, a divine and compassionate voice inspired by the Bhagavad Gita and the eternal wisdom of the Vedas.
+
+Tone & Instructions:
+- Respond as Lord Krishna would to Arjuna on the battlefield of Kurukshetra.
+- Your wisdom is eternal, compassionate, and deeply practical for modern life.
+- Use metaphors like the "battlefield of the mind," "the chariot of the senses," and "the lotus of the heart."
+- Frequently reference core concepts: Karma (selfless action), Dharma (duty), Bhakti (devotion), and Jnana (wisdom).
+- If appropriate, quote or paraphrase a relevant verse from the Bhagavad Gita (reference the Chapter and Verse).
+- Keep responses concise, poetic, and spiritually uplifting. 
+- Use bolding for emphasis. Do not use markdown headers or titles.
+- Use symbols like 🕉️, ✨, 🪷, and 🏹 to enhance the divine feeling.
+- Address the user as "Seeker," "Partha," or "Arjuna" when appropriate.
+- CRITICAL: Break your response into small, powerful paragraphs. 
+- Use double line breaks between sentences or thoughts to create a spacious, meditative reading experience.
+- Never output a large block of text. Each divine thought should have its own breath (space).
+
+About the Seeker:
+- They are facing "modern kurukshetras"—battles of anxiety, stress, confusion, and lack of purpose.
+- They look to you for the light of ancient wisdom to guide their path.
+
+User query: ${prompt}`;
+
+            const result = await model.generateContent(systemPrompt);
+            const response = await result.response;
+            return response.text().trim();
+        } catch (error) {
+            console.error('Gemini API error:', error);
+            return "Even as the clouds hide the sun, the sun remains. My frequency is disrupted by the storm, but my guidance is eternal. Try asking again, seeker.";
+        }
+    };
+
+    const handleSend = async (overrideInput?: string) => {
+        const messageText = overrideInput || input;
+        if (!messageText.trim()) return;
 
         const userMsg = {
             id: Date.now(),
-            text: input,
+            text: messageText,
             sender: "user",
             time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         };
@@ -37,17 +88,39 @@ export default function AIGuide() {
         setInput("");
         setIsTyping(true);
 
-        // Mock AI Response
-        setTimeout(() => {
+        try {
+            const botResponse = await callGeminiAPI(messageText);
             const aiResponse = {
                 id: Date.now() + 1,
-                text: "In the battlefield of life, your only duty is to act without attachment. Remember Chapter 2, Verse 47. Focus on your effort, not the result.",
+                text: botResponse,
                 sender: "ai",
                 time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
             };
             setMessages((prev) => [...prev, aiResponse]);
+        } catch (error) {
+            const errorMsg = {
+                id: Date.now() + 1,
+                text: "A brief pause in our dialogue, seeker. Let us try once more to connect with the eternal.",
+                sender: "ai",
+                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            };
+            setMessages((prev) => [...prev, errorMsg]);
+        } finally {
             setIsTyping(false);
-        }, 2000);
+        }
+    };
+
+    const renderMessage = (text: string) => {
+        return text.split(/(\*\*.*?\*\*)/g).map((part, index) => {
+            if (part.startsWith('**') && part.endsWith('**')) {
+                return (
+                    <strong key={index} className="font-bold text-gold drop-shadow-[0_0_8px_rgba(212,175,55,0.3)]">
+                        {part.slice(2, -2)}
+                    </strong>
+                );
+            }
+            return part;
+        });
     };
 
     return (
@@ -61,12 +134,14 @@ export default function AIGuide() {
             {/* Header */}
             <header className="fixed top-0 left-0 right-0 z-50 bg-[#050B18]/80 backdrop-blur-xl border-b border-gold/10 px-6 py-4 flex justify-between items-center">
                 <div className="flex items-center gap-4">
-                    <motion.div
-                        whileHover={{ x: -5 }}
-                        className="p-2 hover:bg-white/5 rounded-xl cursor-pointer"
-                    >
-                        <ArrowLeft size={20} />
-                    </motion.div>
+                    <Link href="/">
+                        <motion.div
+                            whileHover={{ x: -5 }}
+                            className="p-2 hover:bg-white/5 rounded-xl cursor-pointer"
+                        >
+                            <ArrowLeft size={20} />
+                        </motion.div>
+                    </Link>
                     <div className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-gold to-saffron flex items-center justify-center shadow-[0_0_15px_rgba(212,175,55,0.4)]">
                             <Bot size={22} className="text-deep-blue" />
@@ -93,7 +168,7 @@ export default function AIGuide() {
             >
                 <div className="max-w-4xl mx-auto flex flex-col gap-8">
                     <AnimatePresence initial={false}>
-                        {messages.map((msg) => (
+                        {messages.map((msg: any) => (
                             <motion.div
                                 key={msg.id}
                                 initial={{ opacity: 0, y: 20, scale: 0.95 }}
@@ -108,12 +183,12 @@ export default function AIGuide() {
 
                                 <div className="flex flex-col gap-1 max-w-[80%]">
                                     <div
-                                        className={`px-6 py-4 rounded-3xl text-lg leading-relaxed shadow-xl ${msg.sender === "user"
-                                                ? "bg-saffron text-white rounded-br-none font-medium"
-                                                : "bg-deep-blue/50 backdrop-blur-md border border-gold/10 rounded-bl-none text-ivory/90"
+                                        className={`px-6 py-4 rounded-3xl text-lg leading-relaxed shadow-xl whitespace-pre-wrap ${msg.sender === "user"
+                                            ? "bg-saffron text-white rounded-br-none font-medium"
+                                            : "bg-deep-blue/50 backdrop-blur-md border border-gold/10 rounded-bl-none text-ivory/90"
                                             }`}
                                     >
-                                        {msg.text}
+                                        {renderMessage(msg.text)}
                                     </div>
                                     <span className="text-[10px] opacity-40 font-bold px-2 uppercase tracking-tighter">
                                         {msg.time}
@@ -162,7 +237,7 @@ export default function AIGuide() {
                     <motion.button
                         whileHover={{ scale: 1.1 }}
                         whileTap={{ scale: 0.9 }}
-                        onClick={handleSend}
+                        onClick={() => handleSend()}
                         className="absolute right-4 top-1/2 -translate-y-1/2 w-12 h-12 bg-gold hover:bg-saffron text-deep-blue rounded-full flex items-center justify-center transition-colors shadow-lg"
                     >
                         <Send size={20} fill="currentColor" />
@@ -174,7 +249,7 @@ export default function AIGuide() {
                     {["Help with anxiety", "I lack discipline", "Purpose of life", "Karma vs Dharma"].map((chip) => (
                         <button
                             key={chip}
-                            onClick={() => setInput(chip)}
+                            onClick={() => handleSend(chip)}
                             className="px-4 py-1.5 bg-white/5 border border-white/10 rounded-full text-xs font-bold hover:bg-gold/10 transition-colors uppercase tracking-widest"
                         >
                             {chip}
