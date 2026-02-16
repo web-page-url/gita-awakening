@@ -21,10 +21,24 @@ export default function Hero() {
             <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
                 <motion.div
                     style={{ y: y1, opacity }}
+                    className="absolute inset-0 w-full h-[120%]"
+                >
+                    <img
+                        src="/gita-awakening-1.0.jpg"
+                        alt="Divine Background"
+                        className="w-full h-full object-cover opacity-40 mix-blend-luminosity lg:mix-blend-normal"
+                    />
+                    {/* Deep Cinematic Overlays */}
+                    <div className="absolute inset-0 bg-gradient-to-b from-[#050B18] via-transparent to-[#050B18]" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#050B18] via-transparent to-[#050B18]" />
+                    <div className="absolute inset-0 bg-[#050B18]/40" />
+                </motion.div>
+
+                <motion.div
+                    style={{ y: y1, opacity: 0.3 }}
                     className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120vw] h-[120vw] max-w-[1200px] max-h-[1200px]"
                 >
                     <div className="absolute inset-0 bg-gradient-to-tr from-saffron/20 via-gold/10 to-transparent rounded-full blur-[120px] animate-pulse" />
-                    <div className="absolute inset-20 bg-gradient-to-bl from-lotus/10 via-deep-blue/5 to-transparent rounded-full blur-[100px]" />
                 </motion.div>
 
                 {/* Divine Sparkles */}

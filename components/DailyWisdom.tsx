@@ -49,115 +49,96 @@ export default function DailyWisdom() {
                 <motion.div
                     layout
                     transition={{ type: "spring", damping: 20, stiffness: 100 }}
-                    className="relative rounded-[40px] bg-white dark:bg-deep-blue/40 border-2 border-gold/10 sacred-glow group"
+                    className="relative rounded-[50px] bg-white dark:bg-[#0A1125] border border-white/5 overflow-hidden shadow-[0_40px_100px_rgba(0,0,0,0.4)] group"
                 >
-                    {/* Card Content */}
-                    <div className="p-8 sm:p-16">
-                        <div className="flex justify-between items-start mb-12">
-                            <div className="flex flex-col">
-                                <span className="text-saffron font-bold text-xs tracking-[0.2em] uppercase mb-1">Chapter {mockVerse.chapter}</span>
-                                <span className="text-deep-blue dark:text-ivory font-serif text-3xl font-bold italic">Verse {mockVerse.shloka}</span>
-                            </div>
-                            <div className="flex gap-3">
-                                <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} className="p-3 bg-ivory/50 dark:bg-deep-blue/50 rounded-2xl text-deep-blue/40 dark:text-ivory/40 hover:text-red-500 transition-colors">
-                                    <Heart size={22} fill={isExpanded ? "currentColor" : "none"} />
-                                </motion.button>
-                                <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} className="p-3 bg-ivory/50 dark:bg-deep-blue/50 rounded-2xl text-deep-blue/40 dark:text-ivory/40">
-                                    <Share2 size={22} />
-                                </motion.button>
+                    <div className="flex flex-col lg:flex-row min-h-[600px]">
+                        {/* Image Side - Cinematic Presence */}
+                        <div className="w-full lg:w-1/2 relative overflow-hidden h-[300px] lg:h-auto">
+                            <img
+                                src="/gita-awakening-1.0.jpg"
+                                alt="Divine Wisdom"
+                                className="w-full h-full object-cover transition-transform duration-[3000ms] group-hover:scale-110"
+                            />
+                            {/* Overlays */}
+                            <div className="absolute inset-0 bg-gradient-to-t from-[#0A1125] via-[#0A1125]/20 to-transparent lg:bg-gradient-to-r" />
+                            <div className="absolute inset-0 bg-black/10" />
+
+                            {/* Floating Quote Icon */}
+                            <div className="absolute top-8 left-8 w-16 h-16 rounded-2xl bg-gold/20 backdrop-blur-xl border border-gold/30 flex items-center justify-center text-gold shadow-2xl">
+                                <Quote size={32} />
                             </div>
                         </div>
 
-                        <div className="space-y-10 text-center">
-                            {/* Sanskrit - Enhanced Typography */}
-                            <motion.div
-                                layout
-                                className="text-3xl sm:text-5xl font-bold font-serif text-deep-blue dark:text-ivory leading-[1.3] whitespace-pre-line tracking-tight px-4"
-                            >
-                                {mockVerse.verse}
-                            </motion.div>
-
-                            {/* Transliteration */}
-                            <motion.p layout className="text-deep-blue/40 dark:text-ivory/40 italic font-sans text-lg sm:text-xl max-w-3xl mx-auto border-y border-gold/5 py-4">
-                                {mockVerse.transliteration}
-                            </motion.p>
-
-                            {/* Meanings */}
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 text-left pt-6">
-                                <motion.div initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }}>
-                                    <h4 className="flex items-center gap-2 text-saffron font-bold text-xs uppercase tracking-widest mb-4">
-                                        <BookOpen size={14} /> Meaning (Hindi)
-                                    </h4>
-                                    <p className="text-xl text-deep-blue/80 dark:text-ivory/80 font-light leading-relaxed">
-                                        {mockVerse.hindi}
-                                    </p>
-                                </motion.div>
-                                <motion.div initial={{ opacity: 0, x: 20 }} whileInView={{ opacity: 1, x: 0 }}>
-                                    <h4 className="flex items-center gap-2 text-saffron font-bold text-xs uppercase tracking-widest mb-4">
-                                        <Quote size={14} /> Meaning (English)
-                                    </h4>
-                                    <p className="text-xl text-deep-blue/80 dark:text-ivory/80 font-light leading-relaxed">
-                                        {mockVerse.english}
-                                    </p>
-                                </motion.div>
+                        {/* Content Side - Sacred Text */}
+                        <div className="w-full lg:w-1/2 p-8 sm:p-12 lg:p-16 flex flex-col justify-center relative bg-gradient-to-br from-white/5 to-transparent">
+                            <div className="flex justify-between items-start mb-8">
+                                <div className="space-y-1">
+                                    <span className="text-saffron font-black uppercase tracking-[0.3em] text-[10px] block">Ancient Scripture</span>
+                                    <h3 className="text-deep-blue dark:text-ivory font-serif text-3xl font-bold italic">Chapter {mockVerse.chapter}, Verse {mockVerse.shloka}</h3>
+                                </div>
+                                <div className="flex gap-2">
+                                    <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} className="p-3 bg-deep-blue/5 dark:bg-white/5 rounded-2xl text-deep-blue/40 dark:text-ivory/40 hover:text-red-500 transition-colors">
+                                        <Heart size={20} />
+                                    </motion.button>
+                                </div>
                             </div>
 
-                            {/* Celebrate Section (Dopamine Trigger) */}
-                            <AnimatePresence>
-                                {isExpanded && (
-                                    <motion.div
-                                        initial={{ scale: 0.8, opacity: 0 }}
-                                        animate={{ scale: 1, opacity: 1 }}
-                                        exit={{ scale: 0.8, opacity: 0 }}
-                                        className="relative"
+                            <div className="space-y-8">
+                                <div className="relative">
+                                    <div className="absolute -left-4 top-0 w-1 h-full bg-gradient-to-b from-gold to-transparent opacity-30" />
+                                    <p className="text-3xl sm:text-4xl font-serif font-black text-deep-blue dark:text-ivory leading-[1.3] tracking-tight">
+                                        {mockVerse.verse}
+                                    </p>
+                                </div>
+
+                                <p className="text-deep-blue/50 dark:text-ivory/50 italic font-sans text-lg border-l border-gold/20 pl-4 py-2">
+                                    {mockVerse.transliteration}
+                                </p>
+
+                                <div className="space-y-6 pt-4">
+                                    <div className="group/item">
+                                        <h4 className="flex items-center gap-2 text-saffron font-black text-[10px] uppercase tracking-widest mb-2 opacity-60 group-hover/item:opacity-100 transition-opacity">
+                                            <BookOpen size={14} /> Essence
+                                        </h4>
+                                        <p className="text-lg text-deep-blue/80 dark:text-ivory/80 font-light leading-relaxed italic">
+                                            "{mockVerse.english}"
+                                        </p>
+                                    </div>
+                                </div>
+
+                                {/* Practical Wisdom Toggle Area */}
+                                <AnimatePresence>
+                                    {isExpanded && (
+                                        <motion.div
+                                            initial={{ height: 0, opacity: 0 }}
+                                            animate={{ height: "auto", opacity: 1 }}
+                                            exit={{ height: 0, opacity: 0 }}
+                                            className="overflow-hidden"
+                                        >
+                                            <div className="mt-8 p-8 rounded-[32px] bg-gold/5 border border-gold/20 relative">
+                                                <div className="absolute top-4 right-6 text-5xl opacity-[0.05]">🕉️</div>
+                                                <h4 className="text-gold font-black text-[10px] uppercase tracking-widest mb-3">Practical Application</h4>
+                                                <p className="text-xl text-deep-blue dark:text-ivory leading-relaxed font-medium">
+                                                    {mockVerse.applyText}
+                                                </p>
+                                            </div>
+                                        </motion.div>
+                                    )}
+                                </AnimatePresence>
+
+                                <div className="pt-8">
+                                    <motion.button
+                                        whileHover={{ scale: 1.02 }}
+                                        whileTap={{ scale: 0.98 }}
+                                        onClick={() => setIsExpanded(!isExpanded)}
+                                        className="w-full py-5 bg-deep-blue dark:bg-ivory dark:text-deep-blue text-white rounded-2xl font-black text-lg shadow-xl hover:shadow-gold/20 transition-all flex items-center justify-center gap-3 group"
                                     >
-                                        {/* Floating Lotus Particles */}
-                                        <div className="absolute inset-0 pointer-events-none">
-                                            {[...Array(6)].map((_, i) => (
-                                                <motion.div
-                                                    key={i}
-                                                    initial={{ scale: 0, opacity: 0 }}
-                                                    animate={{
-                                                        y: [-50, -150],
-                                                        x: [0, (i % 2 === 0 ? 50 : -50)],
-                                                        scale: [0, 1.5, 0],
-                                                        opacity: [0, 1, 0]
-                                                    }}
-                                                    transition={{ duration: 2, ease: "easeOut" }}
-                                                    className="absolute left-1/2 top-0 text-3xl"
-                                                >
-                                                    🪷
-                                                </motion.div>
-                                            ))}
-                                        </div>
-
-                                        <div className="mt-12 p-10 rounded-[40px] bg-gradient-to-br from-gold/10 to-saffron/5 border-2 border-gold/20 text-left relative overflow-hidden group/box">
-                                            {/* Background Animated Om */}
-                                            <div className="absolute top-0 right-0 text-[10rem] opacity-[0.03] transition-transform group-hover/box:scale-150 group-hover/box:rotate-12 duration-1000">🕉️</div>
-
-                                            <h4 className="flex items-center gap-2 text-gold font-bold text-sm uppercase tracking-[0.3em] mb-4">
-                                                <Star size={16} fill="currentColor" /> Practical Wisdom
-                                            </h4>
-                                            <p className="text-2xl text-deep-blue dark:text-ivory leading-relaxed font-medium italic">
-                                                "{mockVerse.applyText}"
-                                            </p>
-                                        </div>
-                                    </motion.div>
-                                )}
-                            </AnimatePresence>
-
-                            <div className="pt-8">
-                                <motion.button
-                                    whileHover={{ scale: 1.05, boxShadow: "0 0 30px rgba(212, 175, 55, 0.4)" }}
-                                    whileTap={{ scale: 0.95 }}
-                                    onClick={() => setIsExpanded(!isExpanded)}
-                                    className="px-12 py-5 bg-gradient-to-r from-deep-blue to-[#1a2f5a] dark:from-ivory dark:to-white dark:text-deep-blue text-ivory rounded-full font-bold text-xl shadow-2xl transition-all relative overflow-hidden group/btn"
-                                >
-                                    <span className="relative z-10">
                                         {isExpanded ? "Blessings Received" : "Reflect & Awaken"}
-                                    </span>
-                                    <div className="absolute inset-0 bg-gold translate-y-full group-hover/btn:translate-y-0 transition-transform duration-300 pointer-events-none" />
-                                </motion.button>
+                                        <motion.span animate={{ x: isExpanded ? 0 : [0, 5, 0] }} transition={{ repeat: Infinity, duration: 2 }}>
+                                            <Sparkles size={20} className="text-gold" />
+                                        </motion.span>
+                                    </motion.button>
+                                </div>
                             </div>
                         </div>
                     </div>
