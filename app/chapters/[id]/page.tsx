@@ -54,6 +54,29 @@ export default function ChapterDetail() {
                     animate={{ opacity: 1, y: 0 }}
                     className="mb-12"
                 >
+                    {/* Chapter Visual Card - Premium & Divine */}
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        transition={{ duration: 1, ease: "easeOut" }}
+                        className="relative w-full max-w-md mx-auto aspect-[4/5] mb-16 rounded-[3rem] overflow-hidden border border-white/10 shadow-[0_30px_60px_rgba(0,0,0,0.5)] group"
+                    >
+                        <img
+                            src={`/gita-awakening-${((chapter.id - 1) % 8 + 1)}.0.jpg`}
+                            alt={chapter.title}
+                            className="w-full h-full object-cover object-top transition-transform duration-[3000ms] group-hover:scale-110"
+                        />
+                        {/* Overlay & Flourish */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#050B18] via-transparent to-transparent opacity-60" />
+                        <div className="absolute top-6 right-6 w-10 h-10 border-t-2 border-r-2 border-gold/40 rounded-tr-xl" />
+                        <div className="absolute bottom-6 left-6 w-10 h-10 border-b-2 border-l-2 border-gold/40 rounded-bl-xl" />
+
+                        {/* Divine Label */}
+                        <div className="absolute bottom-6 right-8">
+                            <span className="text-gold font-serif italic text-lg opacity-80">The Divine Revelation</span>
+                        </div>
+                    </motion.div>
+
                     <div className="flex flex-col items-center gap-2 mb-4">
                         <span className="bhagwa-text font-serif italic text-2xl md:text-3xl block">
                             {chapter.tagline}

@@ -88,9 +88,14 @@ export default function Footer() {
 
                 {/* Bottom Section */}
                 <div className="pt-8 border-t border-gold/20 flex flex-col md:flex-row justify-between items-center gap-6">
-                    <p className="text-ivory/40 text-sm">
-                        &copy; {new Date().getFullYear()} Gita Awakening. Made with devotion for the modern warrior.
-                    </p>
+                    <div className="flex flex-col gap-2">
+                        <p className="text-ivory/40 text-sm">
+                            &copy; {new Date().getFullYear()} Gita Awakening. Made with devotion for the modern warrior.
+                        </p>
+                        <p className="text-ivory/60 text-sm">
+                            Created by - <a href="https://www.linkedin.com/in/anubhav-chaudhary-4bba7918b/" target="_blank" rel="noopener noreferrer" className="text-gold hover:text-saffron transition-colors font-bold">Anubhav</a>
+                        </p>
+                    </div>
                     <div className="flex items-center gap-4 opacity-50 text-xl italic font-serif">
                         <span>Yatha icchasi tathā kuru</span>
                     </div>
