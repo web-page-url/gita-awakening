@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { Inter, Playfair_Display } from "next/font/google";
 import "./globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
 import DivineAura from "@/components/DivineAura";
+import LayoutClient from "../components/LayoutClient";
 
 const inter = Inter({
   variable: "--font-sans",
@@ -91,11 +90,7 @@ export default function RootLayout({
         className={`${inter.variable} ${playfair.variable} antialiased font-sans flex flex-col min-h-screen relative`}
       >
         <DivineAura />
-        <Navbar />
-        <main className="flex-grow pt-[80px]">
-          {children}
-        </main>
-        <Footer />
+        <LayoutClient>{children}</LayoutClient>
       </body>
     </html>
   );

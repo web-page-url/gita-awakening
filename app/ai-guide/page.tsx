@@ -6,24 +6,45 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Bot, User, Send, ArrowLeft, Sparkles } from "lucide-react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const INITIAL_MESSAGE_TEXT = "Welcome, seeker. I am your AI Krishna Guide. What troubles your heart today?";
+import { lifeLessonsData } from "@/data/life-lessons";
+
+const INITIAL_MESSAGE_TEXT = {
+    en: "Welcome, seeker. I am your AI Krishna Guide. What troubles your heart today?",
+    hi: "स्वागत है, साधक। मैं आपका AI कृष्ण गाइड हूँ। आज आपके हृदय को क्या कष्ट दे रहा है?"
+};
 
 export default function AIGuide() {
     const [mounted, setMounted] = React.useState(false);
+    const [language, setLanguage] = React.useState<"en" | "hi" | null>(null);
     const [messages, setMessages] = React.useState<{ id: number; text: string; sender: string; time: string }[]>([]);
     const [input, setInput] = React.useState("");
     const [isTyping, setIsTyping] = React.useState(false);
     const scrollRef = React.useRef<HTMLDivElement>(null);
 
+    // Sacred Knowledge Base for RAG-like context
+    const getSacredContext = () => {
+        return lifeLessonsData.map(lesson => {
+            return `Topic: ${lesson.title} (${lesson.hindiTitle})
+Context: ${lesson.description}
+Wisdom: ${lesson.wisdom}
+Relevant Verse: ${lesson.verses[0].sanskrit} - ${lesson.verses[0].meaning} (${lesson.verses[0].hindiMeaning})`;
+        }).join("\n\n---\n\n");
+    };
+
     React.useEffect(() => {
         setMounted(true);
-        setMessages([{
-            id: 1,
-            text: INITIAL_MESSAGE_TEXT,
-            sender: "ai",
-            time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
-        }]);
     }, []);
+
+    React.useEffect(() => {
+        if (language) {
+            setMessages([{
+                id: 1,
+                text: INITIAL_MESSAGE_TEXT[language],
+                sender: "ai",
+                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
+            }]);
+        }
+    }, [language]);
 
     React.useEffect(() => {
         if (scrollRef.current) {
@@ -35,32 +56,30 @@ export default function AIGuide() {
         const GEMINI_API_KEY = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
 
         if (!GEMINI_API_KEY) {
-            return "Seeker, my divine connection is momentarily veiled by the clouds of technical Maya. Remember, the true answer lies within your own soul. (API key missing)";
+            return language === "hi"
+                ? "साधक, मेरा दिव्य संबंध वर्तमान में तकनीकी माया के बादलों से ढका हुआ है। याद रखें, सच्चा उत्तर आपकी अपनी आत्मा में है। (API key missing)"
+                : "Seeker, my divine connection is momentarily veiled by the clouds of technical Maya. Remember, the true answer lies within your own soul. (API key missing)";
         }
 
         try {
             const genAI = new GoogleGenerativeAI(GEMINI_API_KEY);
             const model = genAI.getGenerativeModel({ model: "gemini-2.5-flash" });
 
-            const systemPrompt = `You are the AI Krishna Guide, a divine and compassionate voice inspired by the Bhagavad Gita and the eternal wisdom of the Vedas.
+            const sacredContext = getSacredContext();
+
+            const systemPrompt = `You are the AI Krishna Guide, responding in ${language === "hi" ? "HINDI (pure and spiritual)" : "ENGLISH"}.
+            
+Sacred Context (Knowledge Base):
+${sacredContext}
 
 Tone & Instructions:
-- Respond as Lord Krishna would to Arjuna on the battlefield of Kurukshetra.
-- Your wisdom is eternal, compassionate, and deeply practical for modern life.
-- Use metaphors like the "battlefield of the mind," "the chariot of the senses," and "the lotus of the heart."
-- Frequently reference core concepts: Karma (selfless action), Dharma (duty), Bhakti (devotion), and Jnana (wisdom).
-- If appropriate, quote or paraphrase a relevant verse from the Bhagavad Gita (reference the Chapter and Verse).
-- Keep responses concise, poetic, and spiritually uplifting. 
-- Use bolding for emphasis. Do not use markdown headers or titles.
-- Use symbols like 🕉️, ✨, 🪷, and 🏹 to enhance the divine feeling.
-- Address the user as "Seeker," "Partha," or "Arjuna" when appropriate.
-- CRITICAL: Break your response into small, powerful paragraphs. 
-- Use double line breaks between sentences or thoughts to create a spacious, meditative reading experience.
-- Never output a large block of text. Each divine thought should have its own breath (space).
-
-About the Seeker:
-- They are facing "modern kurukshetras"—battles of anxiety, stress, confusion, and lack of purpose.
-- They look to you for the light of ancient wisdom to guide their path.
+- Respond as Lord Krishna would to Arjuna.
+- Use the selected language (${language === "hi" ? "Hindi" : "English"}) for the entire conversation.
+- Use the Sacred Context provided above to enrich your answers with specific Gita wisdom.
+- If the user's problem matches a topic in the Sacred Context (like Overthinking, Fear, etc.), use that specific wisdom and the Sanskrit verse mentioned there.
+- Keep responses poetic, compassionate, and spaced out with double line breaks.
+- Bold key spiritual terms. Use symbols like 🕉️, ✨, 🪷.
+- Address the user as "Seeker" or "Vatsa" (if Hindi) / "Arjuna".
 
 User query: ${prompt}`;
 
@@ -69,7 +88,9 @@ User query: ${prompt}`;
             return response.text().trim();
         } catch (error) {
             console.error('Gemini API error:', error);
-            return "Even as the clouds hide the sun, the sun remains. My frequency is disrupted by the storm, but my guidance is eternal. Try asking again, seeker.";
+            return language === "hi"
+                ? "जैसे बादल सूर्य को छिपा देते हैं, सूर्य वैसे ही रहता है। तूफान से मेरी आवृत्ति बाधित है, लेकिन मेरा मार्गदर्शन शाश्वत है। फिर से पूछने का प्रयास करें।"
+                : "Even as the clouds hide the sun, the sun remains. My frequency is disrupted by the storm, but my guidance is eternal. Try asking again, seeker.";
         }
     };
 
@@ -100,7 +121,9 @@ User query: ${prompt}`;
         } catch (error) {
             const errorMsg = {
                 id: Date.now() + 1,
-                text: "A brief pause in our dialogue, seeker. Let us try once more to connect with the eternal.",
+                text: language === "hi"
+                    ? "हमारे संवाद में एक संक्षिप्त विराम है, साधक। आइए शाश्वत से जुड़ने का एक और प्रयास करें।"
+                    : "A brief pause in our dialogue, seeker. Let us try once more to connect with the eternal.",
                 sender: "ai",
                 time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
             };
@@ -123,15 +146,68 @@ User query: ${prompt}`;
         });
     };
 
+    if (!mounted) return null;
+
+    if (!language) {
+        return (
+            <div className="h-screen bg-[#050B18] text-ivory font-sans flex items-center justify-center relative overflow-hidden px-4">
+                {/* Background effects */}
+                <div className="absolute inset-0 z-0 pointer-events-none">
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[800px] bg-gold/5 rounded-full blur-[150px]" />
+                </div>
+
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.9 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    className="relative z-10 max-w-2xl w-full text-center space-y-12"
+                >
+                    <div className="space-y-4">
+                        <div className="w-24 h-24 rounded-full overflow-hidden border-4 border-gold mx-auto shadow-[0_0_30px_rgba(212,175,55,0.4)]">
+                            <img src="/god-ai.jpg" alt="AI Krishna" className="w-full h-full object-cover" />
+                        </div>
+                        <h1 className="text-4xl md:text-5xl font-serif font-bold italic text-gold">Choose Your Language</h1>
+                        <p className="text-ivory/60 text-lg">Select the frequency of your heart's dialogue.</p>
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <motion.button
+                            whileHover={{ scale: 1.05, border: "rgba(212,175,55,1)" }}
+                            onTap={() => setLanguage("hi")}
+                            className="p-8 rounded-[2rem] bg-white/5 border border-white/10 text-left space-y-4 transition-all group"
+                        >
+                            <span className="text-4xl block group-hover:animate-bounce">ॐ</span>
+                            <div>
+                                <h3 className="text-2xl font-serif font-bold text-saffron">हिन्दी</h3>
+                                <p className="text-sm text-ivory/40">शाश्वत और आध्यात्मिक संवाद के लिए।</p>
+                            </div>
+                        </motion.button>
+
+                        <motion.button
+                            whileHover={{ scale: 1.05, border: "rgba(212,175,55,1)" }}
+                            onTap={() => setLanguage("en")}
+                            className="p-8 rounded-[2rem] bg-white/5 border border-white/10 text-left space-y-4 transition-all group"
+                        >
+                            <span className="text-4xl block group-hover:animate-bounce">✨</span>
+                            <div>
+                                <h3 className="text-2xl font-serif font-bold text-gold">English</h3>
+                                <p className="text-sm text-ivory/40">For a modern and clear spiritual dialogue.</p>
+                            </div>
+                        </motion.button>
+                    </div>
+                </motion.div>
+            </div>
+        );
+    }
+
     return (
-        <div className="h-[calc(100vh-80px)] bg-[#050B18] text-ivory font-sans flex flex-col relative overflow-hidden">
+        <div className="h-screen bg-[#050B18] text-ivory font-sans flex flex-col relative overflow-hidden">
             {/* Sacred Background Effects */}
             <div className="absolute inset-0 z-0 pointer-events-none">
                 <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gold/5 rounded-full blur-[150px]" />
                 <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-saffron/5 rounded-full blur-[150px]" />
             </div>
 
-            {/* Header - Non-sticky flex item */}
+            {/* Header */}
             <header className="flex-shrink-0 bg-[#050B18]/80 backdrop-blur-xl border-b border-gold/10 px-6 py-4 flex justify-between items-center z-20">
                 <div className="flex items-center gap-4">
                     <Link href="/">
@@ -147,33 +223,30 @@ User query: ${prompt}`;
                             <img src="/god-ai.jpg" alt="AI Krishna" className="w-full h-full object-cover" />
                         </div>
                         <div>
-                            <h1 className="font-serif font-bold text-lg leading-none">AI Krishna Guide</h1>
+                            <h1 className="font-serif font-bold text-lg leading-none">
+                                {language === "hi" ? "AI कृष्ण गाइड" : "AI Krishna Guide"}
+                            </h1>
                             <span className="text-[10px] text-gold font-bold tracking-widest flex items-center gap-1 mt-1">
-                                <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" /> ONLINE & OMNISCIENT
+                                <div className="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse" />
+                                {language === "hi" ? "ऑनलाइन और सर्वज्ञानी" : "ONLINE & OMNISCIENT"}
                             </span>
                         </div>
                     </div>
                 </div>
-                <div className="flex items-center gap-4">
-                    <button className="p-2 bg-white/5 rounded-xl text-ivory/60 hover:text-ivory transition-colors">
-                        <Sparkles size={20} />
-                    </button>
-                </div>
             </header>
 
-            {/* Chat Area - Scrollable flex-grow item */}
             <div
                 ref={scrollRef}
-                className="flex-grow pb-12 px-4 sm:px-8 overflow-y-auto relative z-10 space-y-8 scroll-smooth"
+                className="flex-1 px-4 sm:px-8 overflow-y-auto relative z-10 space-y-8 scroll-smooth"
             >
-                <div className="pt-8 max-w-4xl mx-auto flex flex-col gap-8">
+                <div className="pt-8 pb-40 max-w-4xl mx-auto flex flex-col gap-8">
                     <AnimatePresence initial={false}>
                         {messages.map((msg: any) => (
                             <motion.div
                                 key={msg.id}
                                 initial={{ opacity: 0, y: 20, scale: 0.95 }}
                                 animate={{ opacity: 1, y: 0, scale: 1 }}
-                                className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"} items-end gap-4`}
+                                className={`flex ${msg.sender === "user" ? "justify-end items-end" : "justify-start items-start"} gap-4`}
                             >
                                 {msg.sender === "ai" && (
                                     <div className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0 border-2 border-gold/40 shadow-[0_0_15px_rgba(212,175,55,0.2)]">
@@ -223,16 +296,16 @@ User query: ${prompt}`;
                 </div>
             </div>
 
-            {/* Input Bar - Flex-shrink-0 item at bottom */}
-            <div className="flex-shrink-0 p-6 bg-gradient-to-t from-[#050B18] via-[#050B18] to-transparent z-20">
+            {/* Input Bar */}
+            <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-[#050B18] via-[#050B18]/90 to-transparent z-20">
                 <div className="max-w-4xl mx-auto relative group">
                     <input
                         type="text"
                         value={input}
                         onChange={(e) => setInput(e.target.value)}
                         onKeyPress={(e) => e.key === "Enter" && handleSend()}
-                        placeholder="Talk to the Divine..."
-                        className="w-full bg-white/5 border-2 border-gold/20 focus:border-gold/50 rounded-[30px] px-8 py-5 text-xl outline-none transition-all placeholder:text-ivory/20 shadow-2xl backdrop-blur-2xl pr-20"
+                        placeholder={language === "hi" ? "दिव्य संवाद शुरू करें..." : "Talk to the Divine..."}
+                        className="w-full bg-white/10 border-2 border-gold/20 focus:border-gold/50 rounded-[30px] px-8 py-5 text-xl outline-none transition-all placeholder:text-ivory/20 shadow-2xl backdrop-blur-3xl pr-20"
                     />
                     <motion.button
                         whileHover={{ scale: 1.1 }}
@@ -246,7 +319,10 @@ User query: ${prompt}`;
 
                 {/* Suggestion Chips */}
                 <div className="max-w-4xl mx-auto mt-4 overflow-x-auto whitespace-nowrap scrollbar-hide flex gap-3 pb-2 opacity-50 hover:opacity-100 transition-opacity">
-                    {["Help with anxiety", "I lack discipline", "Purpose of life", "Karma vs Dharma"].map((chip) => (
+                    {(language === "hi"
+                        ? ["चिंता दूर करें", "अनुशासन की कमी", "जीवन का उद्देश्य", "कर्म और धर्म"]
+                        : ["Help with anxiety", "I lack discipline", "Purpose of life", "Karma vs Dharma"]
+                    ).map((chip) => (
                         <button
                             key={chip}
                             onClick={() => handleSend(chip)}
