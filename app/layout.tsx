@@ -16,8 +16,68 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://gita-awakening.vercel.app'),
   title: "Gita Awakening | The Divine Wisdom Experience",
-  description: "A premium spiritual web application inspired by the teachings of the Bhagavad Gita.",
+  description: "A premium spiritual web application inspired by the teachings of the Bhagavad Gita. Experience ancient wisdom for the modern warrior.",
+  keywords: ["Bhagavad Gita", "Spirituality", "Self-Mastery", "Krishna", "Arjuna", "Wisdom", "Meditation"],
+  authors: [{ name: "Anubhav Chaudhary" }],
+  openGraph: {
+    title: "Gita Awakening | The Divine Wisdom Experience",
+    description: "Experience the profound teachings of the Bhagavad Gita through a cinematic digital journey. Ancient wisdom for the modern warrior.",
+    url: "https://gita-awakening.vercel.app/",
+    siteName: "Gita Awakening",
+    images: [
+      {
+        url: "/assets/og-image.jpg",
+        width: 1200,
+        height: 630,
+        alt: "Gita Awakening Divine Vision",
+        type: "image/jpeg",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Gita Awakening | The Divine Wisdom Experience",
+    description: "Experience the profound teachings of the Bhagavad Gita through a cinematic digital journey.",
+    images: ["/assets/twitter-card.jpg"],
+    creator: "@anubhav",
+  },
+  icons: {
+    icon: [
+      { url: "/assets/favicon-16.png", sizes: "16x16", type: "image/png" },
+      { url: "/assets/favicon-32.png", sizes: "32x32", type: "image/png" },
+      { url: "/assets/favicon-48.png", sizes: "48x48", type: "image/png" },
+    ],
+    shortcut: "/assets/favicon-16.png",
+    apple: [
+      { url: "/assets/apple-touch-icon.png", sizes: "180x180", type: "image/png" },
+    ],
+    other: [
+      {
+        rel: "mask-icon",
+        url: "/assets/favicon-48.png",
+        color: "#D4AF37",
+      },
+    ],
+  },
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "Gita Awakening",
+  },
+  formatDetection: {
+    telephone: false,
+  },
+};
+
+export const viewport = {
+  themeColor: "#D4AF37",
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
 };
 
 export default function RootLayout({
