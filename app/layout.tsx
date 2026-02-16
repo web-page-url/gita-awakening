@@ -79,6 +79,38 @@ export const viewport = {
   maximumScale: 1,
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Gita Awakening",
+  "url": "https://gita-awakening.vercel.app",
+  "logo": "https://gita-awakening.vercel.app/assets/favicon-48.png",
+  "description": "A premium spiritual web application inspired by the teachings of the Bhagavad Gita.",
+  "sameAs": [
+    "https://gita-awakening.vercel.app"
+  ],
+  "author": {
+    "@type": "Person",
+    "name": "Anubhav Chaudhary",
+    "jobTitle": "Developer & Creator"
+  }
+};
+
+const websiteLd = {
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Gita Awakening",
+  "url": "https://gita-awakening.vercel.app",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {
+      "@type": "EntryPoint",
+      "urlTemplate": "https://gita-awakening.vercel.app/chapters?q={search_term_string}"
+    },
+    "query-input": "required name=search_term_string"
+  }
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -86,6 +118,16 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteLd) }}
+        />
+      </head>
       <body
         className={`${inter.variable} ${playfair.variable} antialiased font-sans flex flex-col min-h-screen relative`}
       >
