@@ -130,6 +130,7 @@ export default function RootLayout({
       </head>
       <body
         className={`${inter.variable} ${playfair.variable} antialiased font-sans flex flex-col min-h-screen relative`}
+        suppressHydrationWarning
       >
         <DivineAura />
         <LayoutClient>{children}</LayoutClient>
