@@ -24,7 +24,7 @@ export default function LifeLessonDetail() {
             </div>
 
             {/* Navigation Header */}
-            <header className="fixed top-0 left-0 right-0 z-50 px-6 py-4 flex justify-between items-center backdrop-blur-md bg-[#050B18]/40 border-b border-white/5">
+            <header className="sticky top-20 left-0 right-0 z-40 px-6 py-4 flex justify-between items-center backdrop-blur-md bg-[#050B18]/40 border-b border-white/5">
                 <div className="flex items-center gap-4">
                     <button
                         onClick={() => router.back()}
@@ -48,7 +48,7 @@ export default function LifeLessonDetail() {
             </header>
 
             {/* Hero Section */}
-            <section className="pt-32 pb-20 px-6 max-w-5xl mx-auto text-center relative z-10">
+            <section className="pt-20 pb-20 px-6 max-w-5xl mx-auto text-center relative z-10">
                 <motion.div
                     initial={{ opacity: 0, y: 30 }}
                     animate={{ opacity: 1, y: 0 }}

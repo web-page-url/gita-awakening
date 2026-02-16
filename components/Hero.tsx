@@ -9,6 +9,11 @@ export default function Hero() {
     const { scrollY } = useScroll();
     const y1 = useTransform(scrollY, [0, 500], [0, 200]);
     const opacity = useTransform(scrollY, [0, 300], [1, 0]);
+    const [mounted, setMounted] = React.useState(false);
+
+    React.useEffect(() => {
+        setMounted(true);
+    }, []);
 
     return (
         <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden px-4 pt-20">
@@ -23,7 +28,7 @@ export default function Hero() {
                 </motion.div>
 
                 {/* Divine Sparkles */}
-                {[...Array(20)].map((_, i) => (
+                {mounted && [...Array(20)].map((_, i) => (
                     <motion.div
                         key={i}
                         initial={{

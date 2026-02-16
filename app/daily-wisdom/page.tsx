@@ -78,7 +78,7 @@ export default function DailyWisdomPage() {
             </div>
 
             {/* Navigation / Breadcrumb */}
-            <div className="max-w-7xl mx-auto px-6 pt-32 relative z-20">
+            <div className="max-w-7xl mx-auto px-4 md:px-6 pt-32 relative z-20">
                 <Link href="/" className="inline-flex items-center gap-2 text-gold/60 hover:text-gold transition-all font-black uppercase tracking-[0.3em] text-[10px] group">
                     <ArrowLeft size={14} className="group-hover:-translate-x-1 transition-transform" />
                     Back to Sanctuary
@@ -97,7 +97,7 @@ export default function DailyWisdomPage() {
                         Exploring {dailyWisdomData.length} Divine Verses
                     </div>
 
-                    <h1 className="text-7xl md:text-[10rem] font-serif font-black mb-12 leading-none tracking-tighter">
+                    <h1 className="text-5xl md:text-[10rem] font-serif font-black mb-12 leading-none tracking-tighter">
                         Sacred <span className="bhagwa-text italic block md:inline">Library</span>
                     </h1>
 
@@ -108,14 +108,14 @@ export default function DailyWisdomPage() {
                     {/* Floating Search Bar */}
                     <div className="relative max-w-3xl mx-auto group z-20">
                         <div className="absolute inset-0 bg-gold/20 blur-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-1000 rounded-full" />
-                        <div className="relative flex items-center bg-white/[0.05] border border-white/10 rounded-[2.5rem] px-10 py-6 backdrop-blur-2xl group-focus-within:border-gold/50 group-focus-within:bg-white/[0.08] transition-all duration-500 shadow-2xl">
+                        <div className="relative flex items-center bg-white/[0.05] border border-white/10 rounded-2xl md:rounded-[2.5rem] px-5 py-4 md:px-10 md:py-6 backdrop-blur-2xl group-focus-within:border-gold/50 group-focus-within:bg-white/[0.08] transition-all duration-500 shadow-2xl">
                             <Search className="text-gold/40 group-focus-within:text-gold transition-colors" size={28} />
                             <input
                                 type="text"
                                 placeholder="Search by verse, keyword, or tag..."
                                 value={searchQuery}
                                 onChange={(e) => setSearchQuery(e.target.value)}
-                                className="bg-transparent border-none outline-none w-full ml-6 text-2xl font-light placeholder:text-ivory/20 text-ivory"
+                                className="bg-transparent border-none outline-none w-full ml-4 md:ml-6 text-lg md:text-2xl font-light placeholder:text-ivory/20 text-ivory"
                             />
                             {searchQuery && (
                                 <button
@@ -132,38 +132,44 @@ export default function DailyWisdomPage() {
 
             {/* Category Filter UI - Ultra Premium */}
             <section className="sticky top-20 z-50 mb-24 py-8 backdrop-blur-xl border-y border-white/5 bg-[#020617]/80">
-                <div className="max-w-7xl mx-auto px-6">
+                <div className="max-w-7xl mx-auto px-4 md:px-6">
                     <div className="flex items-center gap-4 mb-6 overflow-x-auto no-scrollbar pb-2">
                         <Filter size={14} className="text-gold/60 shrink-0" />
                         <span className="text-[10px] font-black uppercase tracking-[0.3em] text-gold/60 whitespace-nowrap">Filter by Life Situation:</span>
                     </div>
 
-                    <div className="flex items-center justify-start md:justify-center gap-3 overflow-x-auto no-scrollbar pb-4 min-w-max">
-                        {categories.map((cat) => (
-                            <button
-                                key={cat.id}
-                                onClick={() => setActiveCategory(cat.id)}
-                                className={`px-8 py-4 rounded-2xl font-bold transition-all duration-500 flex flex-col items-center gap-1 group relative overflow-hidden border ${activeCategory === cat.id
-                                    ? "bg-gold text-deep-blue border-gold shadow-[0_10px_30px_rgba(212,175,55,0.3)] scale-105"
-                                    : "bg-white/5 text-ivory/50 hover:bg-white/10 hover:text-ivory border-white/5 hover:border-white/20"
-                                    }`}
-                            >
-                                <span className={`text-[9px] uppercase tracking-widest font-black leading-none ${activeCategory === cat.id ? "opacity-90" : "opacity-40 group-hover:opacity-100"}`}>{cat.name}</span>
-                                <span className="font-serif text-lg leading-none">{cat.hindi}</span>
-                                {activeCategory === cat.id && (
-                                    <motion.div
-                                        layoutId="activeFilterUnderline"
-                                        className="absolute inset-x-0 bottom-0 h-1 bg-saffron"
-                                    />
-                                )}
-                            </button>
-                        ))}
+                    <div className="relative group/slider">
+                        {/* Fade Indicators */}
+                        <div className="absolute left-0 inset-y-0 w-12 bg-gradient-to-r from-[#020617] to-transparent z-10 pointer-events-none md:hidden" />
+                        <div className="absolute right-0 inset-y-0 w-12 bg-gradient-to-l from-[#020617] to-transparent z-10 pointer-events-none md:hidden" />
+
+                        <div className="flex items-center justify-start md:justify-center gap-3 overflow-x-auto no-scrollbar pb-4 px-4">
+                            {categories.map((cat) => (
+                                <button
+                                    key={cat.id}
+                                    onClick={() => setActiveCategory(cat.id)}
+                                    className={`px-8 py-4 rounded-2xl font-bold transition-all duration-500 flex flex-col items-center gap-1 group relative overflow-hidden border ${activeCategory === cat.id
+                                        ? "bg-gold text-deep-blue border-gold shadow-[0_10px_30px_rgba(212,175,55,0.3)] scale-105"
+                                        : "bg-white/5 text-ivory/50 hover:bg-white/10 hover:text-ivory border-white/5 hover:border-white/20"
+                                        }`}
+                                >
+                                    <span className={`text-[9px] uppercase tracking-widest font-black leading-none ${activeCategory === cat.id ? "opacity-90" : "opacity-40 group-hover:opacity-100"}`}>{cat.name}</span>
+                                    <span className="font-serif text-lg leading-none">{cat.hindi}</span>
+                                    {activeCategory === cat.id && (
+                                        <motion.div
+                                            layoutId="activeFilterUnderline"
+                                            className="absolute inset-x-0 bottom-0 h-1 bg-saffron"
+                                        />
+                                    )}
+                                </button>
+                            ))}
+                        </div>
                     </div>
                 </div>
             </section>
 
             {/* Results Legend */}
-            <div className="max-w-7xl mx-auto px-6 mb-12 flex justify-between items-center relative z-10">
+            <div className="max-w-7xl mx-auto px-4 md:px-6 mb-12 flex justify-between items-center relative z-10">
                 <div className="flex items-center gap-3">
                     <div className="h-px w-8 bg-gold/30" />
                     <span className="text-gold/60 font-black uppercase tracking-[0.2em] text-[10px]">
@@ -173,7 +179,7 @@ export default function DailyWisdomPage() {
             </div>
 
             {/* Wisdom Grid with Enhanced Accessibility and Interactions */}
-            <section className="px-6 max-w-7xl mx-auto relative z-10">
+            <section className="px-4 md:px-6 max-w-7xl mx-auto relative z-10">
                 <motion.div
                     layout
                     className="grid grid-cols-1 lg:grid-cols-2 gap-16"
@@ -193,10 +199,10 @@ export default function DailyWisdomPage() {
                                 {/* Card Glow Aura */}
                                 <div className={`absolute inset-0 bg-gradient-to-br ${wisdom.gradient} opacity-0 group-hover:opacity-[0.12] transition-opacity duration-1000 blur-[80px] -z-10`} />
 
-                                <div className="h-full rounded-[4rem] bg-white/[0.03] border border-white/5 group-hover:border-gold/40 transition-all duration-700 overflow-hidden backdrop-blur-md flex flex-col p-12 md:p-16 relative">
+                                <div className="h-full rounded-[2rem] md:rounded-[4rem] bg-white/[0.03] border border-white/5 group-hover:border-gold/40 transition-all duration-700 overflow-hidden backdrop-blur-md flex flex-col p-6 md:p-16 relative">
 
                                     {/* Card Header Section */}
-                                    <div className="flex justify-between items-start mb-14">
+                                    <div className="flex justify-between items-start mb-8 md:mb-14">
                                         <div className="flex flex-col gap-3">
                                             <div className="flex flex-wrap gap-2">
                                                 {wisdom.tags.map(tag => (
@@ -229,9 +235,9 @@ export default function DailyWisdomPage() {
                                     </div>
 
                                     {/* Central Sanskrit Text */}
-                                    <div className="mb-14 text-center">
+                                    <div className="mb-8 md:mb-14 text-center">
                                         <motion.h3
-                                            className="text-2xl md:text-4xl font-serif font-black text-ivory leading-[1.4] mb-10 group-hover:text-gold transition-colors duration-700 drop-shadow-[0_0_20px_rgba(212,175,55,0.3)]"
+                                            className="text-xl md:text-4xl font-serif font-black text-ivory leading-[1.4] mb-6 md:mb-10 group-hover:text-gold transition-colors duration-700 drop-shadow-[0_0_20px_rgba(212,175,55,0.3)]"
                                         >
                                             {wisdom.sanskrit}
                                         </motion.h3>
@@ -254,7 +260,7 @@ export default function DailyWisdomPage() {
                                         </div>
 
                                         {/* Application Box */}
-                                        <div className="p-10 rounded-[3rem] bg-gradient-to-br from-white/[0.06] to-transparent border border-white/5 relative overflow-hidden group/box hover:border-gold/20 transition-all duration-500">
+                                        <div className="p-6 md:p-10 rounded-2xl md:rounded-[3rem] bg-gradient-to-br from-white/[0.06] to-transparent border border-white/5 relative overflow-hidden group/box hover:border-gold/20 transition-all duration-500">
                                             <div className="absolute -top-4 -right-4 p-8 text-white/[0.03] group-hover/box:text-gold/[0.05] transition-colors">
                                                 <Quote size={120} />
                                             </div>

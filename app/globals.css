@@ -107,6 +107,15 @@ body {
   ::selection {
     @apply bg-saffron/30 text-deep-blue;
   }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
 }
 
 /* Custom Scrollbar for visual dopamine */

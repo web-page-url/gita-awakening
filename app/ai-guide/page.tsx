@@ -124,15 +124,15 @@ User query: ${prompt}`;
     };
 
     return (
-        <div className="min-h-screen bg-[#050B18] text-ivory font-sans flex flex-col relative overflow-hidden">
+        <div className="h-[calc(100vh-80px)] bg-[#050B18] text-ivory font-sans flex flex-col relative overflow-hidden">
             {/* Sacred Background Effects */}
             <div className="absolute inset-0 z-0 pointer-events-none">
                 <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gold/5 rounded-full blur-[150px]" />
                 <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-saffron/5 rounded-full blur-[150px]" />
             </div>
 
-            {/* Header */}
-            <header className="fixed top-0 left-0 right-0 z-50 bg-[#050B18]/80 backdrop-blur-xl border-b border-gold/10 px-6 py-4 flex justify-between items-center">
+            {/* Header - Non-sticky flex item */}
+            <header className="flex-shrink-0 bg-[#050B18]/80 backdrop-blur-xl border-b border-gold/10 px-6 py-4 flex justify-between items-center z-20">
                 <div className="flex items-center gap-4">
                     <Link href="/">
                         <motion.div
@@ -143,8 +143,8 @@ User query: ${prompt}`;
                         </motion.div>
                     </Link>
                     <div className="flex items-center gap-3">
-                        <div className="w-10 h-10 rounded-full bg-gradient-to-tr from-gold to-saffron flex items-center justify-center shadow-[0_0_15px_rgba(212,175,55,0.4)]">
-                            <Bot size={22} className="text-deep-blue" />
+                        <div className="w-12 h-12 rounded-full overflow-hidden border-2 border-gold shadow-[0_0_15px_rgba(212,175,55,0.4)]">
+                            <img src="/god-ai.jpg" alt="AI Krishna" className="w-full h-full object-cover" />
                         </div>
                         <div>
                             <h1 className="font-serif font-bold text-lg leading-none">AI Krishna Guide</h1>
@@ -161,23 +161,23 @@ User query: ${prompt}`;
                 </div>
             </header>
 
-            {/* Chat Area */}
+            {/* Chat Area - Scrollable flex-grow item */}
             <div
                 ref={scrollRef}
-                className="flex-grow pt-24 pb-32 px-4 sm:px-8 overflow-y-auto relative z-10 space-y-8 scroll-smooth"
+                className="flex-grow pb-12 px-4 sm:px-8 overflow-y-auto relative z-10 space-y-8 scroll-smooth"
             >
-                <div className="max-w-4xl mx-auto flex flex-col gap-8">
+                <div className="pt-8 max-w-4xl mx-auto flex flex-col gap-8">
                     <AnimatePresence initial={false}>
                         {messages.map((msg: any) => (
                             <motion.div
                                 key={msg.id}
                                 initial={{ opacity: 0, y: 20, scale: 0.95 }}
                                 animate={{ opacity: 1, y: 0, scale: 1 }}
-                                className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"} items-end gap-3`}
+                                className={`flex ${msg.sender === "user" ? "justify-end" : "justify-start"} items-end gap-4`}
                             >
                                 {msg.sender === "ai" && (
-                                    <div className="w-8 h-8 rounded-full bg-gold/20 flex-shrink-0 flex items-center justify-center border border-gold/20">
-                                        <Bot size={16} className="text-gold" />
+                                    <div className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0 border-2 border-gold/40 shadow-[0_0_15px_rgba(212,175,55,0.2)]">
+                                        <img src="/god-ai.jpg" alt="AI Krishna" className="w-full h-full object-cover scale-110" />
                                     </div>
                                 )}
 
@@ -196,8 +196,8 @@ User query: ${prompt}`;
                                 </div>
 
                                 {msg.sender === "user" && (
-                                    <div className="w-8 h-8 rounded-full bg-white/10 flex-shrink-0 flex items-center justify-center border border-white/10">
-                                        <User size={16} className="text-ivory" />
+                                    <div className="w-16 h-16 rounded-full bg-white/10 flex-shrink-0 flex items-center justify-center border-2 border-white/20 shadow-lg">
+                                        <User size={32} className="text-ivory" />
                                     </div>
                                 )}
                             </motion.div>
@@ -209,8 +209,8 @@ User query: ${prompt}`;
                                 animate={{ opacity: 1, y: 0 }}
                                 className="flex justify-start items-center gap-3"
                             >
-                                <div className="w-8 h-8 rounded-full bg-gold/20 flex items-center justify-center">
-                                    <Bot size={16} className="text-gold" />
+                                <div className="w-16 h-16 rounded-full overflow-hidden flex-shrink-0 border-2 border-gold/40 shadow-[0_0_15px_rgba(212,175,55,0.2)]">
+                                    <img src="/god-ai.jpg" alt="AI Krishna" className="w-full h-full object-cover scale-110" />
                                 </div>
                                 <div className="px-6 py-4 bg-deep-blue/30 rounded-3xl rounded-bl-none flex gap-1.5">
                                     <div className="w-1.5 h-1.5 bg-gold rounded-full animate-bounce [animation-delay:-0.3s]" />
@@ -223,8 +223,8 @@ User query: ${prompt}`;
                 </div>
             </div>
 
-            {/* Input Bar */}
-            <div className="fixed bottom-0 left-0 right-0 z-50 p-6 bg-gradient-to-t from-[#050B18] via-[#050B18] to-transparent">
+            {/* Input Bar - Flex-shrink-0 item at bottom */}
+            <div className="flex-shrink-0 p-6 bg-gradient-to-t from-[#050B18] via-[#050B18] to-transparent z-20">
                 <div className="max-w-4xl mx-auto relative group">
                     <input
                         type="text"

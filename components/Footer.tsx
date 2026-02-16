@@ -1,5 +1,8 @@
+"use client";
+
 import React from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 const footerLinks = {
     about: [
@@ -20,6 +23,11 @@ const footerLinks = {
 };
 
 export default function Footer() {
+    const pathname = usePathname();
+
+    // Hide footer on AI Guide page for immersive chat experience
+    if (pathname === "/ai-guide") return null;
+
     return (
         <footer className="bg-deep-blue text-ivory py-16 px-4">
             <div className="max-w-7xl mx-auto">

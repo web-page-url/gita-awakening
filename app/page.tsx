@@ -4,6 +4,7 @@ import Hero from "@/components/Hero";
 import DailyWisdom from "@/components/DailyWisdom";
 import ChaptersGrid from "@/components/ChaptersGrid";
 import LifeLessonsSection from "@/components/LifeLessonsSection";
+import DivineGallery from "@/components/DivineGallery";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import { Sparkles, ArrowRight, Play } from "lucide-react";
@@ -14,6 +15,7 @@ export default function Home() {
       <Hero />
       <DailyWisdom />
       <ChaptersGrid />
+      <DivineGallery />
       <LifeLessonsSection />
       {/* Featured CTA: AI Krishna Guide - Soul-Taking Design */}
       <section className="py-32 px-4 relative overflow-hidden">
