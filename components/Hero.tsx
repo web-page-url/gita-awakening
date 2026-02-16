@@ -16,7 +16,7 @@ export default function Hero() {
     }, []);
 
     return (
-        <section className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden px-4 pt-20">
+        <section className="relative min-h-[100dvh] flex flex-col items-center justify-center overflow-hidden px-4 pt-20">
             {/* Immersive Background */}
             <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
                 <motion.div

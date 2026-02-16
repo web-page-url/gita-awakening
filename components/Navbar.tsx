@@ -37,10 +37,10 @@ export default function Navbar() {
     return (
         <nav
             className={cn(
-                "fixed top-0 left-0 right-0 z-50 transition-all duration-500",
+                "fixed top-0 left-0 right-0 z-50 transition-[background-color,padding,border-color] duration-300",
                 scrolled
-                    ? "bg-ivory/70 dark:bg-deep-blue/70 backdrop-blur-2xl py-3 border-b border-gold/20"
-                    : "bg-transparent py-6 border-b border-transparent"
+                    ? "bg-ivory/70 dark:bg-deep-blue/70 backdrop-blur-xl py-3 border-b border-gold/20"
+                    : "bg-transparent py-5 border-b border-transparent"
             )}
         >
             <div className="max-w-[1400px] mx-auto px-6 lg:px-12">
@@ -129,7 +129,7 @@ export default function Navbar() {
                         animate={{ opacity: 1, clipPath: "circle(150% at 100% 0%)" }}
                         exit={{ opacity: 0, clipPath: "circle(0% at 100% 0%)" }}
                         transition={{ type: "spring", damping: 30, stiffness: 200 }}
-                        className="fixed inset-0 bg-ivory dark:bg-deep-blue/95 backdrop-blur-3xl z-40 lg:hidden overflow-hidden flex flex-col items-center justify-center"
+                        className="fixed inset-0 bg-ivory dark:bg-deep-blue/95 backdrop-blur-xl z-40 lg:hidden overflow-hidden flex flex-col items-center justify-center"
                     >
                         <div className="absolute inset-0 z-0 opacity-10 pointer-events-none">
                             <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gold rounded-full blur-[150px]" />

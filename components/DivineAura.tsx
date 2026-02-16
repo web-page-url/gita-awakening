@@ -10,11 +10,9 @@ export default function DivineAura() {
         setMounted(true);
     }, []);
 
-    if (!mounted) return null;
-
     return (
         <div className="fixed inset-0 pointer-events-none z-[-1] overflow-hidden opacity-30">
-            {[...Array(15)].map((_, i) => (
+            {mounted && [...Array(8)].map((_, i) => (
                 <motion.div
                     key={i}
                     initial={{
@@ -25,14 +23,14 @@ export default function DivineAura() {
                     animate={{
                         x: [null, Math.random() * 100 + "vw"],
                         y: [null, Math.random() * 100 + "vh"],
-                        opacity: [0.2, 0.5, 0.2],
+                        opacity: [0.1, 0.3, 0.1],
                     }}
                     transition={{
-                        duration: Math.random() * 20 + 20,
+                        duration: Math.random() * 25 + 25,
                         repeat: Infinity,
                         ease: "linear",
                     }}
-                    className={`absolute w-[300px] h-[300px] ${i % 2 === 0 ? "bg-gold/10" : "bg-saffron/10"} rounded-full blur-[100px]`}
+                    className={`absolute w-[200px] h-[200px] sm:w-[300px] sm:h-[300px] ${i % 2 === 0 ? "bg-gold/5" : "bg-saffron/5"} rounded-full blur-[60px] sm:blur-[100px] will-change-transform`}
                 />
             ))}
         </div>

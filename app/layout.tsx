@@ -129,7 +129,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${inter.variable} ${playfair.variable} antialiased font-sans flex flex-col min-h-screen relative`}
+        className={`${inter.variable} ${playfair.variable} antialiased font-sans flex flex-col min-h-[100dvh] relative`}
         suppressHydrationWarning
       >
         <DivineAura />

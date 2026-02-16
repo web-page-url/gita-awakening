@@ -200,7 +200,7 @@ User query: ${prompt}`;
     }
 
     return (
-        <div className="h-screen bg-[#050B18] text-ivory font-sans flex flex-col relative overflow-hidden">
+        <div className="h-[100dvh] bg-[#050B18] text-ivory font-sans flex flex-col relative overflow-hidden">
             {/* Sacred Background Effects */}
             <div className="absolute inset-0 z-0 pointer-events-none">
                 <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gold/5 rounded-full blur-[150px]" />
@@ -237,7 +237,7 @@ User query: ${prompt}`;
 
             <div
                 ref={scrollRef}
-                className="flex-1 px-4 sm:px-8 overflow-y-auto relative z-10 space-y-8 scroll-smooth"
+                className="flex-1 px-4 sm:px-8 overflow-y-auto relative z-10 space-y-8"
             >
                 <div className="pt-8 pb-40 max-w-4xl mx-auto flex flex-col gap-8">
                     <AnimatePresence initial={false}>
@@ -305,7 +305,7 @@ User query: ${prompt}`;
                         onChange={(e) => setInput(e.target.value)}
                         onKeyPress={(e) => e.key === "Enter" && handleSend()}
                         placeholder={language === "hi" ? "दिव्य संवाद शुरू करें..." : "Talk to the Divine..."}
-                        className="w-full bg-white/10 border-2 border-gold/20 focus:border-gold/50 rounded-[30px] px-8 py-5 text-xl outline-none transition-all placeholder:text-ivory/20 shadow-2xl backdrop-blur-3xl pr-20"
+                        className="w-full bg-white/10 border-2 border-gold/20 focus:border-gold/50 rounded-[30px] px-8 py-5 text-xl outline-none transition-all placeholder:text-ivory/20 shadow-2xl backdrop-blur-xl pr-20"
                     />
                     <motion.button
                         whileHover={{ scale: 1.1 }}
