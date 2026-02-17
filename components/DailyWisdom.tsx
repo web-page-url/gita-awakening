@@ -73,7 +73,7 @@ export default function DailyWisdom() {
                                     <Quote size={32} />
                                 </div>
                                 <button
-                                    onClick={() => speak(`${mockVerse.verse}. ${mockVerse.transliteration}`, "daily-sans", "hi")}
+                                    onClick={() => speak(mockVerse.verse, "daily-sans", "hi")}
                                     className={`w-16 h-16 rounded-2xl backdrop-blur-xl border flex items-center justify-center shadow-2xl transition-all ${isSpeaking === "daily-sans" ? "bg-gold text-deep-blue border-gold" : "bg-white/10 text-gold border-white/20 hover:bg-white/20"}`}
                                 >
                                     {isSpeaking === "daily-sans" ? <VolumeX size={28} /> : <Volume2 size={28} />}
