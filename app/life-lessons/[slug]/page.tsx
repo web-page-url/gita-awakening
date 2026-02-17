@@ -143,19 +143,46 @@ export default function LifeLessonDetail() {
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
-                            <div className="p-8 md:p-12 rounded-[2.5rem] bg-white/[0.02] border border-white/5 hover:border-gold/20 transition-all">
-                                <h4 className="text-gold text-[10px] font-black uppercase tracking-widest mb-6 border-b border-gold/10 pb-2 inline-block">The Insight</h4>
+                            <div className="p-8 md:p-12 rounded-[2.5rem] bg-white/[0.02] border border-white/5 hover:border-gold/20 transition-all relative group/insight">
+                                <div className="flex justify-between items-center mb-6 border-b border-gold/10 pb-2">
+                                    <h4 className="text-gold text-[10px] font-black uppercase tracking-widest inline-block">The Insight</h4>
+                                    <button
+                                        onClick={() => speak(verse.meaning, `verse-${idx}-meaning-en`, "en")}
+                                        className={`p-1.5 rounded-full transition-all ${isSpeaking === `verse-${idx}-meaning-en` ? "bg-gold text-deep-blue" : "text-gold/40 hover:text-gold"}`}
+                                    >
+                                        {isSpeaking === `verse-${idx}-meaning-en` ? <VolumeX size={12} /> : <Volume2 size={12} />}
+                                    </button>
+                                </div>
                                 <div className="space-y-8">
                                     <p className="text-xl md:text-2xl text-ivory/80 leading-relaxed font-light font-serif">
                                         {verse.meaning}
                                     </p>
-                                    <p className="text-xl md:text-2xl text-ivory/90 leading-relaxed font-serif pt-8 border-t border-white/5">
-                                        {verse.hindiMeaning}
-                                    </p>
+                                    <div className="pt-8 border-t border-white/5 relative">
+                                        <div className="flex justify-between items-center mb-4">
+                                            <span className="text-[9px] text-gold/40 uppercase font-bold tracking-widest">Hindi Interpretation</span>
+                                            <button
+                                                onClick={() => speak(verse.hindiMeaning, `verse-${idx}-meaning-hi`, "hi")}
+                                                className={`p-1.5 rounded-full transition-all ${isSpeaking === `verse-${idx}-meaning-hi` ? "bg-gold text-deep-blue" : "text-gold/40 hover:text-gold"}`}
+                                            >
+                                                {isSpeaking === `verse-${idx}-meaning-hi` ? <VolumeX size={12} /> : <Volume2 size={12} />}
+                                            </button>
+                                        </div>
+                                        <p className="text-xl md:text-2xl text-ivory/90 leading-relaxed font-serif">
+                                            {verse.hindiMeaning}
+                                        </p>
+                                    </div>
                                 </div>
                             </div>
-                            <div className="p-8 md:p-12 rounded-[2.5rem] bg-[#0A1125] border border-gold/10 flex flex-col justify-center">
-                                <Quote className="text-gold/20 mb-6" size={40} />
+                            <div className="p-8 md:p-12 rounded-[2.5rem] bg-[#0A1125] border border-gold/10 flex flex-col justify-center relative group/logic">
+                                <div className="flex justify-between items-center mb-6">
+                                    <Quote className="text-gold/20" size={40} />
+                                    <button
+                                        onClick={() => speak(lesson.wisdom, `lesson-${lesson.slug}-wisdom`, "en")}
+                                        className={`p-1.5 rounded-full transition-all ${isSpeaking === `lesson-${lesson.slug}-wisdom` ? "bg-gold text-deep-blue" : "text-gold/40 hover:text-gold"}`}
+                                    >
+                                        {isSpeaking === `lesson-${lesson.slug}-wisdom` ? <VolumeX size={16} /> : <Volume2 size={16} />}
+                                    </button>
+                                </div>
                                 <h4 className="text-gold text-[10px] font-black uppercase tracking-widest mb-4">Deep Logic</h4>
                                 <p className="text-xl md:text-2xl text-ivory font-serif italic leading-relaxed">
                                     {lesson.wisdom}
