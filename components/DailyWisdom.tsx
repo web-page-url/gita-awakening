@@ -14,9 +14,13 @@ const mockVerse = {
     applyText: "Focus on your current task with 100% effort, and let go of the anxiety about the outcome. True peace comes from the process, not the prize.",
 };
 
+import { useVoice } from "@/hooks/useVoice";
+import { Volume2, VolumeX } from "lucide-react";
+
 export default function DailyWisdom() {
     const [isExpanded, setIsExpanded] = useState(false);
     const [streak, setStreak] = useState(7);
+    const { speak, isSpeaking } = useVoice();
 
     return (
         <section className="py-24 px-4 bg-ivory dark:bg-deep-blue/20 overflow-hidden">
@@ -63,9 +67,17 @@ export default function DailyWisdom() {
                             <div className="absolute inset-0 bg-gradient-to-t from-[#0A1125] via-[#0A1125]/20 to-transparent lg:bg-gradient-to-r" />
                             <div className="absolute inset-0 bg-black/10" />
 
-                            {/* Floating Quote Icon */}
-                            <div className="absolute top-8 left-8 w-16 h-16 rounded-2xl bg-gold/20 backdrop-blur-xl border border-gold/30 flex items-center justify-center text-gold shadow-2xl">
-                                <Quote size={32} />
+                            {/* Floating Quote Icon & Voice Button */}
+                            <div className="absolute top-8 left-8 flex gap-4">
+                                <div className="w-16 h-16 rounded-2xl bg-gold/20 backdrop-blur-xl border border-gold/30 flex items-center justify-center text-gold shadow-2xl">
+                                    <Quote size={32} />
+                                </div>
+                                <button
+                                    onClick={() => speak(`${mockVerse.verse}. ${mockVerse.transliteration}`, "daily-sans", "hi")}
+                                    className={`w-16 h-16 rounded-2xl backdrop-blur-xl border flex items-center justify-center shadow-2xl transition-all ${isSpeaking === "daily-sans" ? "bg-gold text-deep-blue border-gold" : "bg-white/10 text-gold border-white/20 hover:bg-white/20"}`}
+                                >
+                                    {isSpeaking === "daily-sans" ? <VolumeX size={28} /> : <Volume2 size={28} />}
+                                </button>
                             </div>
                         </div>
 
@@ -96,10 +108,18 @@ export default function DailyWisdom() {
                                 </p>
 
                                 <div className="space-y-6 pt-4">
-                                    <div className="group/item">
-                                        <h4 className="flex items-center gap-2 text-saffron font-black text-[10px] uppercase tracking-widest mb-2 opacity-60 group-hover/item:opacity-100 transition-opacity">
-                                            <BookOpen size={14} /> Essence
-                                        </h4>
+                                    <div className="group/item relative">
+                                        <div className="flex justify-between items-center mb-2">
+                                            <h4 className="flex items-center gap-2 text-saffron font-black text-[10px] uppercase tracking-widest opacity-60 group-hover/item:opacity-100 transition-opacity">
+                                                <BookOpen size={14} /> Essence
+                                            </h4>
+                                            <button
+                                                onClick={() => speak(mockVerse.english, "daily-eng", "en")}
+                                                className={`p-1.5 rounded-lg transition-all ${isSpeaking === "daily-eng" ? "bg-gold text-deep-blue" : "text-gold/40 hover:text-gold"}`}
+                                            >
+                                                {isSpeaking === "daily-eng" ? <VolumeX size={14} /> : <Volume2 size={14} />}
+                                            </button>
+                                        </div>
                                         <p className="text-lg text-deep-blue/80 dark:text-ivory/80 font-light leading-relaxed italic">
                                             "{mockVerse.english}"
                                         </p>
@@ -117,7 +137,15 @@ export default function DailyWisdom() {
                                         >
                                             <div className="mt-8 p-8 rounded-[32px] bg-gold/5 border border-gold/20 relative">
                                                 <div className="absolute top-4 right-6 text-5xl opacity-[0.05]">🕉️</div>
-                                                <h4 className="text-gold font-black text-[10px] uppercase tracking-widest mb-3">Practical Application</h4>
+                                                <div className="flex justify-between items-center mb-3">
+                                                    <h4 className="text-gold font-black text-[10px] uppercase tracking-widest">Practical Application</h4>
+                                                    <button
+                                                        onClick={() => speak(mockVerse.applyText, "daily-apply", "en")}
+                                                        className={`p-1.5 rounded-lg transition-all ${isSpeaking === "daily-apply" ? "bg-gold text-deep-blue" : "text-gold/40 hover:text-gold"}`}
+                                                    >
+                                                        {isSpeaking === "daily-apply" ? <VolumeX size={14} /> : <Volume2 size={14} />}
+                                                    </button>
+                                                </div>
                                                 <p className="text-xl text-deep-blue dark:text-ivory leading-relaxed font-medium">
                                                     {mockVerse.applyText}
                                                 </p>

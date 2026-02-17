@@ -152,7 +152,12 @@ const chapters = [
     },
 ];
 
+import { useVoice } from "@/hooks/useVoice";
+import { Volume2, VolumeX } from "lucide-react";
+
 export default function ChaptersGrid() {
+    const { speak, isSpeaking } = useVoice();
+
     return (
         <section className="py-24 px-4 bg-[#020617] relative overflow-hidden">
             {/* Decorative Orbs */}
@@ -184,58 +189,72 @@ export default function ChaptersGrid() {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {chapters.map((chapter, idx) => (
-                        <Link href={`/chapters/${chapter.id}`} key={chapter.id}>
-                            <motion.div
-                                initial={{ opacity: 0, y: 30 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                transition={{ delay: idx * 0.05 }}
-                                whileHover={{ y: -8 }}
-                                className="group relative p-10 rounded-[2rem] bg-white/[0.03] border border-white/5 hover:border-gold/30 transition-all duration-500 overflow-hidden cursor-pointer backdrop-blur-sm h-full"
+                        <div key={chapter.id} className="group relative">
+                            <Link href={`/chapters/${chapter.id}`} className="block h-full">
+                                <motion.div
+                                    initial={{ opacity: 0, y: 30 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: idx * 0.05 }}
+                                    whileHover={{ y: -8 }}
+                                    className="group relative p-10 rounded-[2rem] bg-white/[0.03] border border-white/5 hover:border-gold/30 transition-all duration-500 overflow-hidden cursor-pointer backdrop-blur-sm h-full"
+                                >
+                                    {/* Card Aura */}
+                                    <div className={`absolute inset-0 bg-gradient-to-br ${chapter.gradient} opacity-0 group-hover:opacity-[0.05] transition-opacity duration-500`} />
+
+                                    <div className="relative z-10 flex flex-col h-full">
+                                        <div className="flex justify-between items-start mb-10">
+                                            <div className="relative">
+                                                <span className="text-6xl font-serif font-black text-white/5 group-hover:text-gold/20 transition-colors duration-500">
+                                                    {chapter.id < 10 ? `0${chapter.id}` : chapter.id}
+                                                </span>
+                                                <div className="absolute top-1/2 left-4 -translate-y-1/2 w-8 h-1 bg-saffron rounded-full transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
+                                            </div>
+                                            <div className="p-3 bg-gold/5 rounded-xl text-gold opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-500">
+                                                <Sparkles size={20} />
+                                            </div>
+                                        </div>
+
+                                        <div className="mb-6">
+                                            <h4 className="text-saffron font-bold text-xs uppercase tracking-[0.2em] mb-2 scale-95 origin-left group-hover:scale-100 transition-transform">
+                                                {chapter.name}
+                                            </h4>
+                                            <h3 className="text-2xl md:text-3xl font-serif font-bold text-ivory group-hover:text-gold transition-colors duration-500">
+                                                {chapter.title}
+                                            </h3>
+                                        </div>
+
+                                        <p className="text-gold/80 italic font-medium mb-4 line-clamp-2">
+                                            "{chapter.theme}"
+                                        </p>
+
+                                        <p className="text-ivory/40 text-sm leading-relaxed mb-8 font-light">
+                                            {chapter.content}
+                                        </p>
+
+                                        <div className="mt-auto flex items-center gap-2 text-gold text-[10px] font-black uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all duration-500">
+                                            Explore Wisdom <ChevronRight size={12} />
+                                        </div>
+                                    </div>
+
+                                    {/* Decorative Om Symbol */}
+                                    <div className="absolute -bottom-4 -right-4 text-8xl opacity-[0.02] group-hover:opacity-[0.08] transition-all duration-700 -rotate-12 group-hover:rotate-0 blur-[2px] group-hover:blur-0">
+                                        🕉️
+                                    </div>
+                                </motion.div>
+                            </Link>
+
+                            {/* Chapter Voice Toggle */}
+                            <button
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    speak(`${chapter.title}. ${chapter.content}`, `chap-card-${chapter.id}`, "en");
+                                }}
+                                className={`absolute top-10 right-10 p-2.5 rounded-xl transition-all z-20 ${isSpeaking === `chap-card-${chapter.id}` ? "bg-gold text-deep-blue" : "bg-white/5 text-gold/40 border border-white/10 hover:border-gold/30 opacity-0 group-hover:opacity-100"}`}
                             >
-                                {/* Card Aura */}
-                                <div className={`absolute inset-0 bg-gradient-to-br ${chapter.gradient} opacity-0 group-hover:opacity-[0.05] transition-opacity duration-500`} />
-
-                                <div className="relative z-10 flex flex-col h-full">
-                                    <div className="flex justify-between items-start mb-10">
-                                        <div className="relative">
-                                            <span className="text-6xl font-serif font-black text-white/5 group-hover:text-gold/20 transition-colors duration-500">
-                                                {chapter.id < 10 ? `0${chapter.id}` : chapter.id}
-                                            </span>
-                                            <div className="absolute top-1/2 left-4 -translate-y-1/2 w-8 h-1 bg-saffron rounded-full transform origin-left scale-x-0 group-hover:scale-x-100 transition-transform duration-500" />
-                                        </div>
-                                        <div className="p-3 bg-gold/5 rounded-xl text-gold opacity-0 group-hover:opacity-100 transform translate-y-2 group-hover:translate-y-0 transition-all duration-500">
-                                            <Sparkles size={20} />
-                                        </div>
-                                    </div>
-
-                                    <div className="mb-6">
-                                        <h4 className="text-saffron font-bold text-xs uppercase tracking-[0.2em] mb-2 scale-95 origin-left group-hover:scale-100 transition-transform">
-                                            {chapter.name}
-                                        </h4>
-                                        <h3 className="text-2xl md:text-3xl font-serif font-bold text-ivory group-hover:text-gold transition-colors duration-500">
-                                            {chapter.title}
-                                        </h3>
-                                    </div>
-
-                                    <p className="text-gold/80 italic font-medium mb-4 line-clamp-2">
-                                        "{chapter.theme}"
-                                    </p>
-
-                                    <p className="text-ivory/40 text-sm leading-relaxed mb-8 font-light">
-                                        {chapter.content}
-                                    </p>
-
-                                    <div className="mt-auto flex items-center gap-2 text-gold text-[10px] font-black uppercase tracking-widest opacity-0 group-hover:opacity-100 transition-all duration-500">
-                                        Explore Wisdom <ChevronRight size={12} />
-                                    </div>
-                                </div>
-
-                                {/* Decorative Om Symbol */}
-                                <div className="absolute -bottom-4 -right-4 text-8xl opacity-[0.02] group-hover:opacity-[0.08] transition-all duration-700 -rotate-12 group-hover:rotate-0 blur-[2px] group-hover:blur-0">
-                                    🕉️
-                                </div>
-                            </motion.div>
-                        </Link>
+                                {isSpeaking === `chap-card-${chapter.id}` ? <VolumeX size={16} /> : <Volume2 size={16} />}
+                            </button>
+                        </div>
                     ))}
                 </div>
             </div>

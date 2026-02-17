@@ -7,9 +7,11 @@ import LifeLessonsSection from "@/components/LifeLessonsSection";
 import DivineGallery from "@/components/DivineGallery";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Sparkles, ArrowRight, Play } from "lucide-react";
+import { Sparkles, ArrowRight, Play, Volume2, VolumeX } from "lucide-react";
+import { useVoice } from "@/hooks/useVoice";
 
 export default function Home() {
+  const { speak, isSpeaking } = useVoice();
   return (
     <div className="flex flex-col w-full">
       <Hero />
@@ -56,8 +58,16 @@ export default function Home() {
             >
               <div className="absolute top-0 right-0 p-8 text-9xl opacity-10 group-hover:scale-110 group-hover:rotate-12 transition-transform duration-1000 select-none">🕉️</div>
               <div className="space-y-8 relative z-10">
-                <div className="w-16 h-16 rounded-2xl bg-saffron/20 border border-saffron/30 flex items-center justify-center">
-                  <Sparkles className="text-saffron" />
+                <div className="flex justify-between items-center w-full">
+                  <div className="w-16 h-16 rounded-2xl bg-saffron/20 border border-saffron/30 flex items-center justify-center">
+                    <Sparkles className="text-saffron" />
+                  </div>
+                  <button
+                    onClick={() => speak("Seeker, your purpose is not found, but revealed through selfless action. Perform your duty without attachment to the results.", "home-ai-teaser", "en")}
+                    className={`p-3 rounded-2xl transition-all ${isSpeaking === "home-ai-teaser" ? "bg-gold text-deep-blue" : "bg-white/10 text-gold/60 hover:text-gold"}`}
+                  >
+                    {isSpeaking === "home-ai-teaser" ? <VolumeX size={24} /> : <Volume2 size={24} />}
+                  </button>
                 </div>
                 <div className="space-y-2">
                   <p className="text-gold font-bold text-xs tracking-widest uppercase opacity-60">Sample Query</p>
@@ -93,14 +103,26 @@ export default function Home() {
             <motion.button
               whileHover={{ scale: 1.15, boxShadow: "0 0 50px rgba(212, 175, 55, 0.4)" }}
               whileTap={{ scale: 0.9 }}
+              onClick={(e) => {
+                // If already speaking the intro, let the navigation happen or stop? 
+                // User wants voice for free. Let's make this button speak the teaser text if they haven't navigated yet.
+                // But typically a Play button navigates. Let's add a separate voice icon or make it speak on hover?
+                // Actually, let's just make the "Sound of Infinity" title speakable.
+              }}
               className="w-32 h-32 bg-deep-blue dark:bg-ivory dark:text-deep-blue text-ivory rounded-full flex flex-col items-center justify-center shadow-2xl hover:bg-gold hover:text-deep-blue transition-all mx-auto group"
             >
               <Play size={48} fill="currentColor" className="ml-2 group-hover:scale-110 transition-transform" />
             </motion.button>
           </Link>
-          <div className="flex flex-col items-center gap-2">
-            <span className="text-[10px] font-black tracking-[0.6em] text-saffron uppercase animate-pulse">Launch Divine Audio</span>
-            <div className="w-1 h-12 bg-gradient-to-b from-saffron to-transparent" />
+          <div className="flex flex-col items-center gap-4">
+            <button
+              onClick={() => speak("Close your eyes. Let the divine frequencies of the Gita rewire your soul for peace.", "home-audio-teaser", "en")}
+              className={`flex items-center gap-2 px-6 py-2 rounded-full border transition-all ${isSpeaking === "home-audio-teaser" ? "bg-gold text-deep-blue border-gold" : "bg-gold/5 text-gold border-gold/20 hover:bg-gold/20"}`}
+            >
+              {isSpeaking === "home-audio-teaser" ? <VolumeX size={14} /> : <Volume2 size={14} />}
+              <span className="text-[10px] font-black tracking-[0.6em] uppercase">Preview Sound</span>
+            </button>
+            <div className="w-1 h-12 bg-gradient-to-b from-saffron to-transparent mt-4" />
           </div>
         </motion.div>
       </section>

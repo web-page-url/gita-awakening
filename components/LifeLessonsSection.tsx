@@ -50,7 +50,12 @@ const lessons = [
     },
 ];
 
+import { useVoice } from "@/hooks/useVoice";
+import { Volume2, VolumeX } from "lucide-react";
+
 export default function LifeLessonsSection() {
+    const { speak, isSpeaking } = useVoice();
+
     return (
         <section className="py-24 px-4 bg-ivory/50 dark:bg-deep-blue/10">
             <div className="max-w-7xl mx-auto px-4">
@@ -65,29 +70,43 @@ export default function LifeLessonsSection() {
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                     {lessons.map((lesson, index) => (
-                        <Link href={`/life-lessons/${lesson.slug}`} key={lesson.slug} className="group">
-                            <motion.div
-                                initial={{ opacity: 0, y: 20 }}
-                                whileInView={{ opacity: 1, y: 0 }}
-                                transition={{ delay: index * 0.1 }}
-                                whileHover={{ scale: 1.02 }}
-                                className={`p-8 rounded-3xl border border-gold/5 sacred-glow cursor-pointer transition-all h-full ${lesson.color}`}
-                            >
-                                <div className="w-14 h-14 rounded-2xl bg-white dark:bg-deep-blue flex items-center justify-center mb-6 shadow-sm">
-                                    {lesson.icon}
-                                </div>
-                                <h3 className="text-2xl font-serif font-bold text-deep-blue dark:text-ivory mb-3">
-                                    {lesson.title}
-                                </h3>
-                                <p className="text-deep-blue/70 dark:text-ivory/70 leading-relaxed font-light">
-                                    {lesson.description}
-                                </p>
+                        <div key={lesson.slug} className="group relative">
+                            <Link href={`/life-lessons/${lesson.slug}`} className="block h-full">
+                                <motion.div
+                                    initial={{ opacity: 0, y: 20 }}
+                                    whileInView={{ opacity: 1, y: 0 }}
+                                    transition={{ delay: index * 0.1 }}
+                                    whileHover={{ scale: 1.02 }}
+                                    className={`p-8 rounded-3xl border border-gold/5 sacred-glow cursor-pointer transition-all h-full ${lesson.color}`}
+                                >
+                                    <div className="w-14 h-14 rounded-2xl bg-white dark:bg-deep-blue flex items-center justify-center mb-6 shadow-sm">
+                                        {lesson.icon}
+                                    </div>
+                                    <h3 className="text-2xl font-serif font-bold text-deep-blue dark:text-ivory mb-3">
+                                        {lesson.title}
+                                    </h3>
+                                    <p className="text-deep-blue/70 dark:text-ivory/70 leading-relaxed font-light">
+                                        {lesson.description}
+                                    </p>
 
-                                <div className="mt-6 flex items-center gap-2 text-saffron text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
-                                    Explore Verses →
-                                </div>
-                            </motion.div>
-                        </Link>
+                                    <div className="mt-6 flex items-center gap-2 text-saffron text-sm font-semibold opacity-0 group-hover:opacity-100 transition-opacity">
+                                        Explore Verses →
+                                    </div>
+                                </motion.div>
+                            </Link>
+
+                            {/* Absolute positioned voice button to avoid link conflict */}
+                            <button
+                                onClick={(e) => {
+                                    e.preventDefault();
+                                    e.stopPropagation();
+                                    speak(lesson.description, `card-${lesson.slug}`, "en");
+                                }}
+                                className={`absolute top-6 right-6 p-2 rounded-xl transition-all z-10 ${isSpeaking === `card-${lesson.slug}` ? "bg-gold text-deep-blue" : "bg-white/50 dark:bg-white/5 text-gold/60 hover:text-gold opacity-0 group-hover:opacity-100"}`}
+                            >
+                                {isSpeaking === `card-${lesson.slug}` ? <VolumeX size={16} /> : <Volume2 size={16} />}
+                            </button>
+                        </div>
                     ))}
                 </div>
 

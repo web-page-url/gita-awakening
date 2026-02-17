@@ -4,14 +4,16 @@ import React from "react";
 import { useParams, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import { lifeLessonsData } from "@/data/life-lessons";
-import { ArrowLeft, Share2, Bookmark, CheckCircle2, Quote, Lightbulb, MessageCircle } from "lucide-react";
+import { ArrowLeft, Share2, Bookmark, CheckCircle2, Quote, Lightbulb, MessageCircle, Volume2, VolumeX } from "lucide-react";
 import Link from "next/link";
+import { useVoice } from "@/hooks/useVoice";
 
 export default function LifeLessonDetail() {
     const params = useParams();
     const router = useRouter();
     const slug = params.slug as string;
     const lesson = lifeLessonsData.find((l) => l.slug === slug);
+    const { speak, isSpeaking } = useVoice();
 
     if (!lesson) return <div className="min-h-screen flex items-center justify-center text-ivory">Lesson not found...</div>;
 
@@ -74,14 +76,23 @@ export default function LifeLessonDetail() {
                     <div className="w-24 h-1 bg-gold mx-auto rounded-full opacity-30 shadow-[0_0_15px_rgba(212,175,55,0.5)]" />
                 </motion.div>
 
-                <motion.p
+                <motion.div
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ delay: 0.2 }}
-                    className="text-lg md:text-2xl text-ivory/70 leading-relaxed font-light italic max-w-3xl mx-auto"
+                    className="relative group"
                 >
-                    "{lesson.description}"
-                </motion.p>
+                    <p className="text-lg md:text-2xl text-ivory/70 leading-relaxed font-light italic max-w-3xl mx-auto mb-8">
+                        "{lesson.description}"
+                    </p>
+                    <button
+                        onClick={() => speak(lesson.description, `lesson-${lesson.slug}-desc`, "en")}
+                        className={`px-6 py-2 rounded-full transition-all border flex items-center gap-2 mx-auto ${isSpeaking === `lesson-${lesson.slug}-desc` ? "bg-gold text-deep-blue border-gold" : "bg-gold/5 text-gold border-gold/20 hover:bg-gold/20"}`}
+                    >
+                        {isSpeaking === `lesson-${lesson.slug}-desc` ? <VolumeX size={16} /> : <Volume2 size={16} />}
+                        <span className="text-[10px] font-black uppercase tracking-widest">Listen to Insight</span>
+                    </button>
+                </motion.div>
             </section>
 
             {/* Relatable Scenario Card */}
@@ -96,7 +107,15 @@ export default function LifeLessonDetail() {
                             <MessageCircle size={100} />
                         </div>
                         <div className="relative z-10 max-w-3xl">
-                            <span className="text-saffron font-black uppercase tracking-[0.4em] text-[10px] mb-6 block">We've all been there</span>
+                            <div className="flex justify-between items-center mb-6">
+                                <span className="text-saffron font-black uppercase tracking-[0.4em] text-[10px] block">We've all been there</span>
+                                <button
+                                    onClick={() => speak(lesson.relatableScenario, `lesson-${lesson.slug}-scenario`, "en")}
+                                    className={`p-2 rounded-full transition-all ${isSpeaking === `lesson-${lesson.slug}-scenario` ? "bg-gold text-deep-blue" : "text-gold/40 hover:text-gold hover:bg-gold/10"}`}
+                                >
+                                    {isSpeaking === `lesson-${lesson.slug}-scenario` ? <VolumeX size={16} /> : <Volume2 size={16} />}
+                                </button>
+                            </div>
                             <h3 className="text-2xl md:text-4xl font-serif font-bold text-ivory mb-8">Does this sound familiar?</h3>
                             <p className="text-xl md:text-2xl text-ivory/70 leading-relaxed italic border-l-4 border-gold/30 pl-8">
                                 "{lesson.relatableScenario}"
@@ -115,6 +134,12 @@ export default function LifeLessonDetail() {
                             <h3 className="text-2xl md:text-4xl font-serif font-bold text-saffron leading-relaxed max-w-4xl mx-auto drop-shadow-lg">
                                 {verse.sanskrit}
                             </h3>
+                            <button
+                                onClick={() => speak(verse.sanskrit, `verse-${idx}-sans`, "hi")}
+                                className={`p-2.5 rounded-full transition-all border inline-flex ${isSpeaking === `verse-${idx}-sans` ? "bg-gold text-deep-blue border-gold" : "bg-gold/5 text-gold border-gold/20 hover:bg-gold/20"}`}
+                            >
+                                {isSpeaking === `verse-${idx}-sans` ? <VolumeX size={14} /> : <Volume2 size={14} />}
+                            </button>
                         </div>
 
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
@@ -164,7 +189,15 @@ export default function LifeLessonDetail() {
                                     className="flex items-start gap-4 p-6 rounded-2xl bg-white/5 border border-white/5 hover:bg-gold/5 transition-all"
                                 >
                                     <CheckCircle2 className="text-gold mt-1 shrink-0" size={24} />
-                                    <p className="text-lg md:text-xl text-ivory/80 font-light">{step}</p>
+                                    <div className="flex-1 space-y-4">
+                                        <p className="text-lg md:text-xl text-ivory/80 font-light">{step}</p>
+                                        <button
+                                            onClick={() => speak(step, `step-${idx}`, "en")}
+                                            className={`p-1.5 rounded-full transition-all border flex items-center justify-center w-8 h-8 ${isSpeaking === `step-${idx}` ? "bg-gold text-deep-blue border-gold" : "bg-white/5 text-gold/40 border-white/10 hover:border-gold/30"}`}
+                                        >
+                                            {isSpeaking === `step-${idx}` ? <VolumeX size={10} /> : <Volume2 size={10} />}
+                                        </button>
+                                    </div>
                                 </motion.div>
                             ))}
                         </div>

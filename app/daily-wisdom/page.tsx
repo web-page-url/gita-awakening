@@ -3,8 +3,9 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { dailyWisdomData } from "@/data/daily-wisdom";
-import { Sparkles, Quote, Bookmark, Share2, Flame, ArrowLeft, Search, Filter, Check } from "lucide-react";
+import { Sparkles, Quote, Bookmark, Share2, Flame, ArrowLeft, Search, Filter, Check, Volume2, VolumeX } from "lucide-react";
 import Link from "next/link";
+import { useVoice } from "@/hooks/useVoice";
 
 const categories = [
     { id: "All", name: "All", hindi: "सभी" },
@@ -27,6 +28,7 @@ export default function DailyWisdomPage() {
     const [searchQuery, setSearchQuery] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const [isLoaded, setIsLoaded] = useState(false);
+    const { speak, isSpeaking } = useVoice();
 
     useEffect(() => {
         setIsLoaded(true);
@@ -236,11 +238,19 @@ export default function DailyWisdomPage() {
 
                                     {/* Central Sanskrit Text */}
                                     <div className="mb-8 md:mb-14 text-center">
-                                        <motion.h3
-                                            className="text-xl md:text-4xl font-serif font-black text-ivory leading-[1.4] mb-6 md:mb-10 group-hover:text-gold transition-colors duration-700 drop-shadow-[0_0_20px_rgba(212,175,55,0.3)]"
-                                        >
-                                            {wisdom.sanskrit}
-                                        </motion.h3>
+                                        <div className="flex flex-col items-center gap-4 mb-6 md:mb-10">
+                                            <motion.h3
+                                                className="text-xl md:text-4xl font-serif font-black text-ivory leading-[1.4] group-hover:text-gold transition-colors duration-700 drop-shadow-[0_0_20px_rgba(212,175,55,0.3)]"
+                                            >
+                                                {wisdom.sanskrit}
+                                            </motion.h3>
+                                            <button
+                                                onClick={() => speak(wisdom.sanskrit, `${wisdom.id}-sanskrit`, "hi")}
+                                                className={`p-3 rounded-full transition-all border ${isSpeaking === `${wisdom.id}-sanskrit` ? "bg-gold text-deep-blue border-gold" : "bg-gold/5 text-gold border-gold/20 hover:bg-gold/20"}`}
+                                            >
+                                                {isSpeaking === `${wisdom.id}-sanskrit` ? <VolumeX size={16} /> : <Volume2 size={16} />}
+                                            </button>
+                                        </div>
                                         <div className="flex justify-center gap-2">
                                             <div className="w-12 h-[2px] bg-gradient-to-r from-transparent to-gold/30" />
                                             <div className="w-2 h-2 rounded-full bg-gold/40 animate-pulse" />
@@ -253,7 +263,15 @@ export default function DailyWisdomPage() {
                                         {/* Hindi Meaning */}
                                         <div className="relative pl-10 border-l-2 border-gold/10 group-hover:border-gold/30 transition-colors">
                                             <div className="absolute top-0 left-[-2px] h-full w-[2px] bg-gradient-to-b from-gold via-saffron to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                                            <h4 className="text-gold font-black uppercase tracking-[0.3em] text-[10px] mb-4">The Essence (हिंदी भाव)</h4>
+                                            <div className="flex justify-between items-center mb-4">
+                                                <h4 className="text-gold font-black uppercase tracking-[0.3em] text-[10px]">The Essence (हिंदी भाव)</h4>
+                                                <button
+                                                    onClick={() => speak(wisdom.hindi, `${wisdom.id}-hindi`, "hi")}
+                                                    className={`p-1.5 rounded-full transition-all ${isSpeaking === `${wisdom.id}-hindi` ? "bg-gold text-deep-blue" : "text-gold/40 hover:text-gold"}`}
+                                                >
+                                                    {isSpeaking === `${wisdom.id}-hindi` ? <VolumeX size={12} /> : <Volume2 size={12} />}
+                                                </button>
+                                            </div>
                                             <p className="text-xl md:text-2xl text-ivory/90 font-serif leading-relaxed italic">
                                                 "{wisdom.hindi}"
                                             </p>
@@ -274,9 +292,17 @@ export default function DailyWisdomPage() {
                                                 </div>
 
                                                 <div className="mb-8">
-                                                    <span className="text-saffron/80 text-xs font-bold uppercase tracking-[0.2em] block mb-3 border-b border-saffron/20 pb-2 w-fit">
-                                                        {wisdom.modernContext}
-                                                    </span>
+                                                    <div className="flex justify-between items-center mb-3">
+                                                        <span className="text-saffron/80 text-xs font-bold uppercase tracking-[0.2em] border-b border-saffron/20 pb-2 w-fit">
+                                                            {wisdom.modernContext}
+                                                        </span>
+                                                        <button
+                                                            onClick={() => speak(`${wisdom.application}. ${wisdom.hindiApplication}`, `${wisdom.id}-eng-app`, "en")}
+                                                            className={`p-1.5 rounded-full transition-all ${isSpeaking === `${wisdom.id}-eng-app` ? "bg-gold text-deep-blue" : "text-gold/40 hover:text-gold"}`}
+                                                        >
+                                                            {isSpeaking === `${wisdom.id}-eng-app` ? <VolumeX size={12} /> : <Volume2 size={12} />}
+                                                        </button>
+                                                    </div>
                                                     <p className="text-ivory font-sans text-lg leading-relaxed font-light">
                                                         {wisdom.application}
                                                     </p>
