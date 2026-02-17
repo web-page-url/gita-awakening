@@ -297,7 +297,7 @@ export default function DailyWisdomPage() {
                                                             {wisdom.modernContext}
                                                         </span>
                                                         <button
-                                                            onClick={() => speak(`${wisdom.application}. ${wisdom.hindiApplication}`, `${wisdom.id}-eng-app`, "en")}
+                                                            onClick={() => speak(wisdom.application, `${wisdom.id}-eng-app`, "en")}
                                                             className={`p-1.5 rounded-full transition-all ${isSpeaking === `${wisdom.id}-eng-app` ? "bg-gold text-deep-blue" : "text-gold/40 hover:text-gold"}`}
                                                         >
                                                             {isSpeaking === `${wisdom.id}-eng-app` ? <VolumeX size={12} /> : <Volume2 size={12} />}
@@ -308,9 +308,20 @@ export default function DailyWisdomPage() {
                                                     </p>
                                                 </div>
 
-                                                <p className="text-gold/70 font-serif text-base border-t border-white/5 pt-6 mt-6 leading-relaxed">
-                                                    {wisdom.hindiApplication}
-                                                </p>
+                                                <div className="pt-6 mt-6 border-t border-white/5 relative">
+                                                    <div className="flex justify-between items-center mb-3">
+                                                        <span className="text-[9px] text-gold/40 uppercase font-bold tracking-widest">Hindi Guidance</span>
+                                                        <button
+                                                            onClick={() => speak(wisdom.hindiApplication, `${wisdom.id}-hi-app`, "hi")}
+                                                            className={`p-1.5 rounded-full transition-all ${isSpeaking === `${wisdom.id}-hi-app` ? "bg-gold text-deep-blue" : "text-gold/40 hover:text-gold"}`}
+                                                        >
+                                                            {isSpeaking === `${wisdom.id}-hi-app` ? <VolumeX size={12} /> : <Volume2 size={12} />}
+                                                        </button>
+                                                    </div>
+                                                    <p className="text-gold/70 font-serif text-base leading-relaxed">
+                                                        {wisdom.hindiApplication}
+                                                    </p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
