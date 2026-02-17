@@ -61,30 +61,33 @@ export default function DailyWisdom() {
                             <img
                                 src="/gita-awakening-1.0.jpg"
                                 alt="Divine Wisdom"
-                                className="w-full h-full object-cover transition-transform duration-[3000ms] group-hover:scale-110"
+                                className="w-full h-full object-cover object-top transition-transform duration-[3000ms] group-hover:scale-110"
                             />
                             {/* Overlays */}
                             <div className="absolute inset-0 bg-gradient-to-t from-[#0A1125] via-[#0A1125]/20 to-transparent lg:bg-gradient-to-r" />
                             <div className="absolute inset-0 bg-black/10" />
 
-                            {/* Floating Quote Icon & Voice Button */}
-                            <div className="absolute top-8 left-8 flex gap-4">
-                                <div className="w-16 h-16 rounded-2xl bg-gold/20 backdrop-blur-xl border border-gold/30 flex items-center justify-center text-gold shadow-2xl">
-                                    <Quote size={32} />
+                            {/* Floating Quote Icon & Voice Button - Repositioned for Mobile to avoid overlap */}
+                            <div className="absolute top-6 left-6 lg:top-8 lg:left-8 flex lg:flex-row flex-col-reverse gap-4">
+                                <div className="w-12 h-12 lg:w-16 lg:h-16 rounded-2xl bg-gold/20 backdrop-blur-xl border border-gold/30 flex items-center justify-center text-gold shadow-2xl">
+                                    <Quote size={24} className="lg:hidden" />
+                                    <Quote size={32} className="hidden lg:block" />
                                 </div>
-                                <div className="flex gap-4">
+                                <div className="flex flex-row lg:flex-row gap-4 mt-auto lg:mt-0">
                                     <button
                                         onClick={() => speak(mockVerse.verse, "daily-sans", "hi")}
-                                        className={`w-16 h-16 rounded-2xl backdrop-blur-xl border flex items-center justify-center shadow-2xl transition-all ${isSpeaking === "daily-sans" ? "bg-gold text-deep-blue border-gold" : "bg-white/10 text-gold border-white/20 hover:bg-white/20"}`}
+                                        className={`w-12 h-12 lg:w-16 lg:h-16 rounded-2xl backdrop-blur-xl border flex items-center justify-center shadow-2xl transition-all ${isSpeaking === "daily-sans" ? "bg-gold text-deep-blue border-gold" : "bg-white/10 text-gold border-white/20 hover:bg-white/20"}`}
                                     >
-                                        {isSpeaking === "daily-sans" ? <VolumeX size={28} /> : <Volume2 size={28} />}
+                                        {isSpeaking === "daily-sans" ? <VolumeX size={20} className="lg:hidden" /> : <Volume2 size={20} className="lg:hidden" />}
+                                        {isSpeaking === "daily-sans" ? <VolumeX size={28} className="hidden lg:block" /> : <Volume2 size={28} className="hidden lg:block" />}
                                     </button>
                                     {isSpeaking === "daily-sans" && (
                                         <button
                                             onClick={() => isPaused ? resume() : pause()}
-                                            className="w-16 h-16 rounded-2xl backdrop-blur-xl border bg-white/10 text-gold border-white/20 hover:bg-white/20 flex items-center justify-center shadow-2xl transition-all"
+                                            className="w-12 h-12 lg:w-16 lg:h-16 rounded-2xl backdrop-blur-xl border bg-white/10 text-gold border-white/20 hover:bg-white/20 flex items-center justify-center shadow-2xl transition-all"
                                         >
-                                            {isPaused ? <Play size={28} /> : <Pause size={28} />}
+                                            {isPaused ? <Play size={20} className="lg:hidden" /> : <Pause size={20} className="lg:hidden" />}
+                                            {isPaused ? <Play size={28} className="hidden lg:block" /> : <Pause size={28} className="hidden lg:block" />}
                                         </button>
                                     )}
                                 </div>

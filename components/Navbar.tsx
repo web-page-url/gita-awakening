@@ -34,6 +34,15 @@ export default function Navbar() {
         return () => window.removeEventListener("scroll", handleScroll);
     }, []);
 
+    // Lock body scroll when mobile menu is open
+    useEffect(() => {
+        if (isOpen) {
+            document.body.style.overflow = "hidden";
+        } else {
+            document.body.style.overflow = "unset";
+        }
+    }, [isOpen]);
+
     return (
         <nav
             className={cn(
@@ -55,7 +64,7 @@ export default function Navbar() {
                             🕉️
                         </motion.div>
                         <div className="flex flex-col">
-                            <span className="font-serif text-2xl font-black tracking-tighter text-deep-blue dark:text-ivory leading-none">
+                            <span className="font-serif text-lg sm:text-2xl font-black tracking-tighter text-deep-blue dark:text-ivory leading-none">
                                 GITA <span className="gold-text">AWAKENING</span>
                             </span>
                             <span className="text-[10px] uppercase tracking-[0.4em] font-bold text-saffron opacity-80 leading-none mt-1">
@@ -86,7 +95,7 @@ export default function Navbar() {
                     </div>
 
                     {/* Right: Gamified Utilities */}
-                    <div className="flex items-center gap-2 sm:gap-6">
+                    <div className="flex items-center gap-2 lg:gap-6">
                         {/* Devotion Counter - Dopamine Trigger */}
                         <motion.div
                             whileHover={{ scale: 1.05 }}
@@ -125,32 +134,42 @@ export default function Navbar() {
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
-                        initial={{ opacity: 0, clipPath: "circle(0% at 100% 0%)" }}
-                        animate={{ opacity: 1, clipPath: "circle(150% at 100% 0%)" }}
-                        exit={{ opacity: 0, clipPath: "circle(0% at 100% 0%)" }}
-                        transition={{ type: "spring", damping: 30, stiffness: 200 }}
-                        className="fixed inset-0 bg-ivory dark:bg-deep-blue/95 backdrop-blur-xl z-40 lg:hidden overflow-hidden flex flex-col items-center justify-center"
+                        initial={{ x: "-100%" }}
+                        animate={{ x: 0 }}
+                        exit={{ x: "-100%" }}
+                        transition={{ type: "spring", damping: 30, stiffness: 300 }}
+                        className="fixed inset-0 bg-black/60 dark:bg-black/80 backdrop-blur-[40px] z-[100] lg:hidden flex flex-col"
                     >
-                        <div className="absolute inset-0 z-0 opacity-10 pointer-events-none">
-                            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gold rounded-full blur-[150px]" />
-                            <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-saffron rounded-full blur-[150px]" />
+                        {/* Sacred Close Button - Prominent and Closeable */}
+                        <div className="absolute top-6 right-6 z-[120]">
+                            <button
+                                onClick={() => setIsOpen(false)}
+                                className="p-4 bg-saffron text-white rounded-full shadow-2xl shadow-saffron/40 active:scale-95 transition-all"
+                            >
+                                <X size={28} />
+                            </button>
                         </div>
 
-                        <div className="flex flex-col items-center gap-8 relative z-10 w-full px-12">
+                        <div className="absolute inset-0 z-0 opacity-10 pointer-events-none">
+                            <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-gold rounded-full blur-[150px]" />
+                            <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-saffron rounded-full blur-[150px]" />
+                        </div>
+
+                        <div className="flex-1 w-full flex flex-col items-center justify-center gap-4 relative z-10 px-6">
                             {navItems.map((item, i) => (
                                 <motion.div
                                     key={item.href}
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: i * 0.1 }}
+                                    initial={{ opacity: 0, scale: 0.9 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    transition={{ delay: i * 0.05 }}
                                     className="w-full text-center"
                                 >
                                     <Link
                                         href={item.href}
                                         onClick={() => setIsOpen(false)}
                                         className={cn(
-                                            "text-5xl font-serif font-black block transition-all",
-                                            pathname === item.href ? "text-saffron scale-110" : "text-deep-blue dark:text-ivory opacity-60 hover:opacity-100"
+                                            "text-3xl font-serif font-black block transition-all tracking-tight py-2",
+                                            pathname === item.href ? "text-saffron scale-110" : "text-ivory/80 hover:text-ivory"
                                         )}
                                     >
                                         {item.name}
