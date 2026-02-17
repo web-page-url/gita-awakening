@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { Bot, User, Send, ArrowLeft, Sparkles } from "lucide-react";
+import { Bot, User, Send, ArrowLeft, Sparkles, Volume2, VolumeX } from "lucide-react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 import { lifeLessonsData } from "@/data/life-lessons";
@@ -19,7 +19,38 @@ export default function AIGuide() {
     const [messages, setMessages] = React.useState<{ id: number; text: string; sender: string; time: string }[]>([]);
     const [input, setInput] = React.useState("");
     const [isTyping, setIsTyping] = React.useState(false);
+    const [isSpeaking, setIsSpeaking] = React.useState<number | null>(null);
     const scrollRef = React.useRef<HTMLDivElement>(null);
+
+    // Voice functionality
+    const speak = (text: string, id: number) => {
+        if (typeof window === "undefined") return;
+
+        if (isSpeaking === id) {
+            window.speechSynthesis.cancel();
+            setIsSpeaking(null);
+            return;
+        }
+
+        window.speechSynthesis.cancel();
+        const utterance = new SpeechSynthesisUtterance(text.replace(/\*\*/g, ''));
+
+        // Try to find a suitable voice
+        const voices = window.speechSynthesis.getVoices();
+        if (language === "hi") {
+            utterance.voice = voices.find(v => v.lang.includes("hi-IN")) || null;
+            utterance.rate = 0.9; // Slightly slower for spiritual impact
+        } else {
+            utterance.voice = voices.find(v => v.lang.includes("en-IN")) || voices.find(v => v.lang.includes("en-GB")) || null;
+            utterance.rate = 0.95;
+        }
+
+        utterance.onend = () => setIsSpeaking(null);
+        utterance.onerror = () => setIsSpeaking(null);
+
+        setIsSpeaking(id);
+        window.speechSynthesis.speak(utterance);
+    };
 
     // Sacred Knowledge Base for RAG-like context
     const getSacredContext = () => {
@@ -263,9 +294,19 @@ User query: ${prompt}`;
                                     >
                                         {renderMessage(msg.text)}
                                     </div>
-                                    <span className="text-[10px] opacity-40 font-bold px-2 uppercase tracking-tighter">
-                                        {msg.time}
-                                    </span>
+                                    <div className="flex items-center justify-between gap-4 mt-1">
+                                        <span className="text-[10px] opacity-40 font-bold px-2 uppercase tracking-tighter">
+                                            {msg.time}
+                                        </span>
+                                        {msg.sender === "ai" && (
+                                            <button
+                                                onClick={() => speak(msg.text, msg.id)}
+                                                className={`p-1.5 rounded-full transition-all ${isSpeaking === msg.id ? "bg-gold text-deep-blue" : "hover:bg-white/10 text-gold/60 hover:text-gold"}`}
+                                            >
+                                                {isSpeaking === msg.id ? <VolumeX size={12} /> : <Volume2 size={12} />}
+                                            </button>
+                                        )}
+                                    </div>
                                 </div>
 
                                 {msg.sender === "user" && (
