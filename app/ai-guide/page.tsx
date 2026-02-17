@@ -60,9 +60,15 @@ export default function AIGuide() {
         // Try to find a suitable voice
         const voices = window.speechSynthesis.getVoices();
         if (language === "hi") {
-            utterance.voice = voices.find(v => v.lang.includes("hi-IN")) || null;
+            utterance.lang = "hi-IN";
+            utterance.voice =
+                voices.find(v => v.lang.replace('_', '-').toLowerCase() === "hi-in") ||
+                voices.find(v => v.lang.toLowerCase().startsWith("hi")) ||
+                voices.find(v => v.name.toLowerCase().includes("hindi")) ||
+                null;
             utterance.rate = 0.9; // Slightly slower for spiritual impact
         } else {
+            utterance.lang = "en-IN";
             utterance.voice = voices.find(v => v.lang.includes("en-IN")) || voices.find(v => v.lang.includes("en-GB")) || null;
             utterance.rate = 0.95;
         }

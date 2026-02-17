@@ -40,11 +40,23 @@ export const useVoice = () => {
         const utterance = new SpeechSynthesisUtterance(text.replace(/\*\*/g, ''));
 
         const voices = window.speechSynthesis.getVoices();
+
         if (lang === "hi") {
-            utterance.voice = voices.find(v => v.lang.includes("hi-IN")) || null;
+            utterance.lang = "hi-IN";
+            // Look for hi-IN first, then any hi, then check if voice name contains "hindi"
+            utterance.voice =
+                voices.find(v => v.lang.replace('_', '-').toLowerCase() === "hi-in") ||
+                voices.find(v => v.lang.toLowerCase().startsWith("hi")) ||
+                voices.find(v => v.name.toLowerCase().includes("hindi")) ||
+                null;
             utterance.rate = 0.85;
         } else {
-            utterance.voice = voices.find(v => v.lang.includes("en-IN")) || voices.find(v => v.lang.includes("en-GB")) || voices.find(v => v.lang.includes("en-US")) || null;
+            utterance.lang = "en-IN";
+            utterance.voice =
+                voices.find(v => v.lang.includes("en-IN")) ||
+                voices.find(v => v.lang.includes("en-GB")) ||
+                voices.find(v => v.lang.includes("en-US")) ||
+                null;
             utterance.rate = 0.9;
         }
 
