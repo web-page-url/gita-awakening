@@ -136,7 +136,7 @@ export default function DailyWisdom() {
                                             className="overflow-hidden"
                                         >
                                             <div className="mt-8 p-8 rounded-[32px] bg-gold/5 border border-gold/20 relative">
-                                                <div className="absolute top-4 right-6 text-5xl opacity-[0.05]">🕉️</div>
+                                                <div className="absolute top-4 right-6 text-5xl opacity-[0.05] pointer-events-none">🕉️</div>
                                                 <div className="flex justify-between items-center mb-3">
                                                     <h4 className="text-gold font-black text-[10px] uppercase tracking-widest">Practical Application</h4>
                                                     <button
