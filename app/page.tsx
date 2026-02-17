@@ -7,11 +7,11 @@ import LifeLessonsSection from "@/components/LifeLessonsSection";
 import DivineGallery from "@/components/DivineGallery";
 import { motion } from "framer-motion";
 import Link from "next/link";
-import { Sparkles, ArrowRight, Play, Volume2, VolumeX } from "lucide-react";
+import { Sparkles, ArrowRight, Play, Volume2, VolumeX, Pause } from "lucide-react";
 import { useVoice } from "@/hooks/useVoice";
 
 export default function Home() {
-  const { speak, isSpeaking } = useVoice();
+  const { speak, pause, resume, isSpeaking, isPaused } = useVoice();
   return (
     <div className="flex flex-col w-full">
       <Hero />
@@ -62,12 +62,22 @@ export default function Home() {
                   <div className="w-16 h-16 rounded-2xl bg-saffron/20 border border-saffron/30 flex items-center justify-center">
                     <Sparkles className="text-saffron" />
                   </div>
-                  <button
-                    onClick={() => speak("Seeker, your purpose is not found, but revealed through selfless action. Perform your duty without attachment to the results.", "home-ai-teaser", "en")}
-                    className={`p-3 rounded-2xl transition-all ${isSpeaking === "home-ai-teaser" ? "bg-gold text-deep-blue" : "bg-white/10 text-gold/60 hover:text-gold"}`}
-                  >
-                    {isSpeaking === "home-ai-teaser" ? <VolumeX size={24} /> : <Volume2 size={24} />}
-                  </button>
+                  <div className="flex gap-2">
+                    <button
+                      onClick={() => speak("Seeker, your purpose is not found, but revealed through selfless action. Perform your duty without attachment to the results.", "home-ai-teaser", "en")}
+                      className={`p-3 rounded-2xl transition-all ${isSpeaking === "home-ai-teaser" ? "bg-gold text-deep-blue" : "bg-white/10 text-gold/60 hover:text-gold"}`}
+                    >
+                      {isSpeaking === "home-ai-teaser" ? <VolumeX size={24} /> : <Volume2 size={24} />}
+                    </button>
+                    {isSpeaking === "home-ai-teaser" && (
+                      <button
+                        onClick={() => isPaused ? resume() : pause()}
+                        className="p-3 rounded-2xl bg-gold text-deep-blue transition-all"
+                      >
+                        {isPaused ? <Play size={24} /> : <Pause size={24} />}
+                      </button>
+                    )}
+                  </div>
                 </div>
                 <div className="space-y-2">
                   <p className="text-gold font-bold text-xs tracking-widest uppercase opacity-60">Sample Query</p>
@@ -115,13 +125,23 @@ export default function Home() {
             </motion.button>
           </Link>
           <div className="flex flex-col items-center gap-4">
-            <button
-              onClick={() => speak("Close your eyes. Let the divine frequencies of the Gita rewire your soul for peace.", "home-audio-teaser", "en")}
-              className={`flex items-center gap-2 px-6 py-2 rounded-full border transition-all ${isSpeaking === "home-audio-teaser" ? "bg-gold text-deep-blue border-gold" : "bg-gold/5 text-gold border-gold/20 hover:bg-gold/20"}`}
-            >
-              {isSpeaking === "home-audio-teaser" ? <VolumeX size={14} /> : <Volume2 size={14} />}
-              <span className="text-[10px] font-black tracking-[0.6em] uppercase">Preview Sound</span>
-            </button>
+            <div className="flex gap-2">
+              <button
+                onClick={() => speak("Close your eyes. Let the divine frequencies of the Gita rewire your soul for peace.", "home-audio-teaser", "en")}
+                className={`flex items-center gap-2 px-6 py-2 rounded-full border transition-all ${isSpeaking === "home-audio-teaser" ? "bg-gold text-deep-blue border-gold" : "bg-gold/5 text-gold border-gold/20 hover:bg-gold/20"}`}
+              >
+                {isSpeaking === "home-audio-teaser" ? <VolumeX size={14} /> : <Volume2 size={14} />}
+                <span className="text-[10px] font-black tracking-[0.6em] uppercase">Preview Sound</span>
+              </button>
+              {isSpeaking === "home-audio-teaser" && (
+                <button
+                  onClick={() => isPaused ? resume() : pause()}
+                  className="p-2 rounded-full transition-all border bg-gold/5 text-gold border-gold/20 hover:bg-gold/20"
+                >
+                  {isPaused ? <Play size={14} /> : <Pause size={14} />}
+                </button>
+              )}
+            </div>
             <div className="w-1 h-12 bg-gradient-to-b from-saffron to-transparent mt-4" />
           </div>
         </motion.div>

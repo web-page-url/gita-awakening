@@ -4,7 +4,7 @@ import React from "react";
 import { useParams, useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { chaptersDetails } from "@/data/chapters";
-import { ArrowLeft, Share2, Bookmark, Play, Headphones, Quote, Volume2, VolumeX } from "lucide-react";
+import { ArrowLeft, Share2, Bookmark, Play, Headphones, Quote, Volume2, VolumeX, Pause } from "lucide-react";
 import Link from "next/link";
 import { useVoice } from "@/hooks/useVoice";
 
@@ -13,7 +13,7 @@ export default function ChapterDetail() {
     const router = useRouter();
     const id = parseInt(params.id as string);
     const chapter = chaptersDetails.find((c) => c.id === id);
-    const { speak, isSpeaking } = useVoice();
+    const { speak, pause, resume, isSpeaking, isPaused } = useVoice();
 
     if (!chapter) return <div className="min-h-screen flex items-center justify-center text-ivory">Chapter not found...</div>;
 
@@ -113,13 +113,25 @@ export default function ChapterDetail() {
                         "{chapter.description}"
                     </p>
                     <div className="mt-8">
-                        <button
-                            onClick={() => speak(chapter.description, `chap-${chapter.id}-desc`, "en")}
-                            className={`px-6 py-2 rounded-full transition-all border flex items-center gap-2 mx-auto ${isSpeaking === `chap-${chapter.id}-desc` ? "bg-gold text-deep-blue border-gold" : "bg-gold/5 text-gold border-gold/20 hover:bg-gold/20"}`}
-                        >
-                            {isSpeaking === `chap-${chapter.id}-desc` ? <VolumeX size={16} /> : <Volume2 size={16} />}
-                            <span className="text-[10px] font-black uppercase tracking-widest">Listen to Summary</span>
-                        </button>
+                        <div className="flex flex-col items-center gap-4">
+                            <div className="flex gap-2 mx-auto">
+                                <button
+                                    onClick={() => speak(chapter.description, `chap-${chapter.id}-desc`, "en")}
+                                    className={`px-6 py-2 rounded-full transition-all border flex items-center gap-2 ${isSpeaking === `chap-${chapter.id}-desc` ? "bg-gold text-deep-blue border-gold" : "bg-gold/5 text-gold border-gold/20 hover:bg-gold/20"}`}
+                                >
+                                    {isSpeaking === `chap-${chapter.id}-desc` ? <VolumeX size={16} /> : <Volume2 size={16} />}
+                                    <span className="text-[10px] font-black uppercase tracking-widest">Listen to Summary</span>
+                                </button>
+                                {isSpeaking === `chap-${chapter.id}-desc` && (
+                                    <button
+                                        onClick={() => isPaused ? resume() : pause()}
+                                        className="p-2.5 rounded-full transition-all border bg-gold/5 text-gold border-gold/20 hover:bg-gold/20"
+                                    >
+                                        {isPaused ? <Play size={16} /> : <Pause size={16} />}
+                                    </button>
+                                )}
+                            </div>
+                        </div>
                     </div>
                 </motion.div>
             </section>
@@ -168,24 +180,44 @@ export default function ChapterDetail() {
                                 <h3 className="text-2xl md:text-4xl font-serif font-bold text-saffron leading-relaxed max-w-4xl mx-auto">
                                     {gem.sanskrit}
                                 </h3>
-                                <button
-                                    onClick={() => speak(gem.sanskrit, `gem-${idx}-sans`, "hi")}
-                                    className={`p-2.5 rounded-full transition-all border inline-flex ${isSpeaking === `gem-${idx}-sans` ? "bg-gold text-deep-blue border-gold" : "bg-gold/5 text-gold border-gold/20 hover:bg-gold/20"}`}
-                                >
-                                    {isSpeaking === `gem-${idx}-sans` ? <VolumeX size={14} /> : <Volume2 size={14} />}
-                                </button>
+                                <div className="flex gap-2 justify-center">
+                                    <button
+                                        onClick={() => speak(gem.sanskrit, `gem-${idx}-sans`, "hi")}
+                                        className={`p-2.5 rounded-full transition-all border inline-flex ${isSpeaking === `gem-${idx}-sans` ? "bg-gold text-deep-blue border-gold" : "bg-gold/5 text-gold border-gold/20 hover:bg-gold/20"}`}
+                                    >
+                                        {isSpeaking === `gem-${idx}-sans` ? <VolumeX size={14} /> : <Volume2 size={14} />}
+                                    </button>
+                                    {isSpeaking === `gem-${idx}-sans` && (
+                                        <button
+                                            onClick={() => isPaused ? resume() : pause()}
+                                            className="p-2.5 rounded-full transition-all border bg-gold/5 text-gold border-gold/20 hover:bg-gold/20"
+                                        >
+                                            {isPaused ? <Play size={14} /> : <Pause size={14} />}
+                                        </button>
+                                    )}
+                                </div>
                             </div>
 
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-stretch">
                                 <div className="p-8 md:p-12 rounded-[2.5rem] bg-white/[0.02] border border-white/5 backdrop-blur-sm relative group/meaning">
                                     <div className="flex justify-between items-center mb-6 border-b border-gold/10 pb-2">
                                         <h4 className="text-gold text-[10px] font-black uppercase tracking-widest inline-block">The Meaning</h4>
-                                        <button
-                                            onClick={() => speak(gem.meaning, `gem-${idx}-meaning-en`, "en")}
-                                            className={`p-1.5 rounded-full transition-all ${isSpeaking === `gem-${idx}-meaning-en` ? "bg-gold text-deep-blue" : "text-gold/40 hover:text-gold"}`}
-                                        >
-                                            {isSpeaking === `gem-${idx}-meaning-en` ? <VolumeX size={12} /> : <Volume2 size={12} />}
-                                        </button>
+                                        <div className="flex gap-2">
+                                            <button
+                                                onClick={() => speak(gem.meaning, `gem-${idx}-meaning-en`, "en")}
+                                                className={`p-1.5 rounded-full transition-all ${isSpeaking === `gem-${idx}-meaning-en` ? "bg-gold text-deep-blue" : "text-gold/40 hover:text-gold"}`}
+                                            >
+                                                {isSpeaking === `gem-${idx}-meaning-en` ? <VolumeX size={12} /> : <Volume2 size={12} />}
+                                            </button>
+                                            {isSpeaking === `gem-${idx}-meaning-en` && (
+                                                <button
+                                                    onClick={() => isPaused ? resume() : pause()}
+                                                    className="p-1.5 rounded-full transition-all text-gold/40 hover:text-gold"
+                                                >
+                                                    {isPaused ? <Play size={12} /> : <Pause size={12} />}
+                                                </button>
+                                            )}
+                                        </div>
                                     </div>
                                     <div className="space-y-8">
                                         <p className="text-xl md:text-2xl text-ivory/80 leading-relaxed font-light">
@@ -195,12 +227,22 @@ export default function ChapterDetail() {
                                             <div className="pt-8 border-t border-white/5">
                                                 <div className="flex justify-between items-center mb-4">
                                                     <span className="text-[9px] text-gold/40 uppercase font-bold tracking-widest">Hindi Interpretation</span>
-                                                    <button
-                                                        onClick={() => speak((gem as any).hindiMeaning, `gem-${idx}-meaning-hi`, "hi")}
-                                                        className={`p-1.5 rounded-full transition-all ${isSpeaking === `gem-${idx}-meaning-hi` ? "bg-gold text-deep-blue" : "text-gold/40 hover:text-gold"}`}
-                                                    >
-                                                        {isSpeaking === `gem-${idx}-meaning-hi` ? <VolumeX size={12} /> : <Volume2 size={12} />}
-                                                    </button>
+                                                    <div className="flex gap-2">
+                                                        <button
+                                                            onClick={() => speak((gem as any).hindiMeaning, `gem-${idx}-meaning-hi`, "hi")}
+                                                            className={`p-1.5 rounded-full transition-all ${isSpeaking === `gem-${idx}-meaning-hi` ? "bg-gold text-deep-blue" : "text-gold/40 hover:text-gold"}`}
+                                                        >
+                                                            {isSpeaking === `gem-${idx}-meaning-hi` ? <VolumeX size={12} /> : <Volume2 size={12} />}
+                                                        </button>
+                                                        {isSpeaking === `gem-${idx}-meaning-hi` && (
+                                                            <button
+                                                                onClick={() => isPaused ? resume() : pause()}
+                                                                className="p-1.5 rounded-full transition-all text-gold/40 hover:text-gold"
+                                                            >
+                                                                {isPaused ? <Play size={12} /> : <Pause size={12} />}
+                                                            </button>
+                                                        )}
+                                                    </div>
                                                 </div>
                                                 <p className="text-xl md:text-2xl text-ivory/90 leading-relaxed font-serif">
                                                     {(gem as any).hindiMeaning}
@@ -212,12 +254,22 @@ export default function ChapterDetail() {
                                 <div className="p-8 md:p-12 rounded-[2.5rem] bg-gradient-to-br from-gold/10 to-transparent border border-gold/10 relative group/lesson">
                                     <div className="flex justify-between items-center mb-6 border-b border-gold/10 pb-2">
                                         <h4 className="text-gold text-[10px] font-black uppercase tracking-widest inline-block">The Soul Lesson</h4>
-                                        <button
-                                            onClick={() => speak(gem.lesson, `gem-${idx}-lesson`, "en")}
-                                            className={`p-1.5 rounded-full transition-all ${isSpeaking === `gem-${idx}-lesson` ? "bg-gold text-deep-blue" : "text-gold/40 hover:text-gold"}`}
-                                        >
-                                            {isSpeaking === `gem-${idx}-lesson` ? <VolumeX size={12} /> : <Volume2 size={12} />}
-                                        </button>
+                                        <div className="flex gap-2">
+                                            <button
+                                                onClick={() => speak(gem.lesson, `gem-${idx}-lesson`, "en")}
+                                                className={`p-1.5 rounded-full transition-all ${isSpeaking === `gem-${idx}-lesson` ? "bg-gold text-deep-blue" : "text-gold/40 hover:text-gold"}`}
+                                            >
+                                                {isSpeaking === `gem-${idx}-lesson` ? <VolumeX size={12} /> : <Volume2 size={12} />}
+                                            </button>
+                                            {isSpeaking === `gem-${idx}-lesson` && (
+                                                <button
+                                                    onClick={() => isPaused ? resume() : pause()}
+                                                    className="p-1.5 rounded-full transition-all text-gold/40 hover:text-gold"
+                                                >
+                                                    {isPaused ? <Play size={12} /> : <Pause size={12} />}
+                                                </button>
+                                            )}
+                                        </div>
                                     </div>
                                     <p className="text-xl md:text-2xl text-ivory font-serif italic leading-relaxed">
                                         "{gem.lesson}"

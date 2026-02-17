@@ -4,11 +4,27 @@ import { useState, useCallback, useEffect } from "react";
 
 export const useVoice = () => {
     const [isSpeaking, setIsSpeaking] = useState<string | null>(null);
+    const [isPaused, setIsPaused] = useState(false);
 
     const stop = useCallback(() => {
         if (typeof window !== "undefined") {
             window.speechSynthesis.cancel();
             setIsSpeaking(null);
+            setIsPaused(false);
+        }
+    }, []);
+
+    const pause = useCallback(() => {
+        if (typeof window !== "undefined" && window.speechSynthesis.speaking) {
+            window.speechSynthesis.pause();
+            setIsPaused(true);
+        }
+    }, []);
+
+    const resume = useCallback(() => {
+        if (typeof window !== "undefined" && window.speechSynthesis.paused) {
+            window.speechSynthesis.resume();
+            setIsPaused(false);
         }
     }, []);
 
@@ -32,10 +48,17 @@ export const useVoice = () => {
             utterance.rate = 0.9;
         }
 
-        utterance.onend = () => setIsSpeaking(null);
-        utterance.onerror = () => setIsSpeaking(null);
+        utterance.onend = () => {
+            setIsSpeaking(null);
+            setIsPaused(false);
+        };
+        utterance.onerror = () => {
+            setIsSpeaking(null);
+            setIsPaused(false);
+        };
 
         setIsSpeaking(id);
+        setIsPaused(false);
         window.speechSynthesis.speak(utterance);
     }, [isSpeaking, stop]);
 
@@ -48,5 +71,5 @@ export const useVoice = () => {
         };
     }, []);
 
-    return { speak, stop, isSpeaking };
+    return { speak, stop, pause, resume, isSpeaking, isPaused };
 };

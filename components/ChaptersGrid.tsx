@@ -153,10 +153,10 @@ const chapters = [
 ];
 
 import { useVoice } from "@/hooks/useVoice";
-import { Volume2, VolumeX } from "lucide-react";
+import { Volume2, VolumeX, Pause, Play } from "lucide-react";
 
 export default function ChaptersGrid() {
-    const { speak, isSpeaking } = useVoice();
+    const { speak, pause, resume, isSpeaking, isPaused } = useVoice();
 
     return (
         <section className="py-24 px-4 bg-[#020617] relative overflow-hidden">
@@ -243,17 +243,30 @@ export default function ChaptersGrid() {
                                 </motion.div>
                             </Link>
 
-                            {/* Chapter Voice Toggle */}
-                            <button
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    e.stopPropagation();
-                                    speak(`${chapter.title}. ${chapter.content}`, `chap-card-${chapter.id}`, "en");
-                                }}
-                                className={`absolute top-10 right-10 p-2.5 rounded-xl transition-all z-20 ${isSpeaking === `chap-card-${chapter.id}` ? "bg-gold text-deep-blue" : "bg-white/5 text-gold/40 border border-white/10 hover:border-gold/30 opacity-0 group-hover:opacity-100"}`}
-                            >
-                                {isSpeaking === `chap-card-${chapter.id}` ? <VolumeX size={16} /> : <Volume2 size={16} />}
-                            </button>
+                            <div className="absolute top-10 right-10 flex gap-2 z-20">
+                                <button
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        speak(`${chapter.title}. ${chapter.content}`, `chap-card-${chapter.id}`, "en");
+                                    }}
+                                    className={`p-2.5 rounded-xl transition-all ${isSpeaking === `chap-card-${chapter.id}` ? "bg-gold text-deep-blue" : "bg-white/5 text-gold/40 border border-white/10 hover:border-gold/30 opacity-0 group-hover:opacity-100"}`}
+                                >
+                                    {isSpeaking === `chap-card-${chapter.id}` ? <VolumeX size={16} /> : <Volume2 size={16} />}
+                                </button>
+                                {isSpeaking === `chap-card-${chapter.id}` && (
+                                    <button
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            e.stopPropagation();
+                                            isPaused ? resume() : pause();
+                                        }}
+                                        className="p-2.5 rounded-xl bg-gold text-deep-blue transition-all"
+                                    >
+                                        {isPaused ? <Play size={16} /> : <Pause size={16} />}
+                                    </button>
+                                )}
+                            </div>
                         </div>
                     ))}
                 </div>

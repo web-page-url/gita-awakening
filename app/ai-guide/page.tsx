@@ -3,7 +3,7 @@
 import * as React from "react";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
-import { Bot, User, Send, ArrowLeft, Sparkles, Volume2, VolumeX } from "lucide-react";
+import { Bot, User, Send, ArrowLeft, Sparkles, Volume2, VolumeX, Pause, Play } from "lucide-react";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 import { lifeLessonsData } from "@/data/life-lessons";
@@ -20,15 +20,37 @@ export default function AIGuide() {
     const [input, setInput] = React.useState("");
     const [isTyping, setIsTyping] = React.useState(false);
     const [isSpeaking, setIsSpeaking] = React.useState<number | null>(null);
+    const [isPaused, setIsPaused] = React.useState(false);
     const scrollRef = React.useRef<HTMLDivElement>(null);
 
     // Voice functionality
+    const stop = () => {
+        if (typeof window !== "undefined") {
+            window.speechSynthesis.cancel();
+            setIsSpeaking(null);
+            setIsPaused(false);
+        }
+    };
+
+    const pause = () => {
+        if (typeof window !== "undefined" && window.speechSynthesis.speaking) {
+            window.speechSynthesis.pause();
+            setIsPaused(true);
+        }
+    };
+
+    const resume = () => {
+        if (typeof window !== "undefined" && window.speechSynthesis.paused) {
+            window.speechSynthesis.resume();
+            setIsPaused(false);
+        }
+    };
+
     const speak = (text: string, id: number) => {
         if (typeof window === "undefined") return;
 
         if (isSpeaking === id) {
-            window.speechSynthesis.cancel();
-            setIsSpeaking(null);
+            stop();
             return;
         }
 
@@ -45,10 +67,17 @@ export default function AIGuide() {
             utterance.rate = 0.95;
         }
 
-        utterance.onend = () => setIsSpeaking(null);
-        utterance.onerror = () => setIsSpeaking(null);
+        utterance.onend = () => {
+            setIsSpeaking(null);
+            setIsPaused(false);
+        };
+        utterance.onerror = () => {
+            setIsSpeaking(null);
+            setIsPaused(false);
+        };
 
         setIsSpeaking(id);
+        setIsPaused(false);
         window.speechSynthesis.speak(utterance);
     };
 
@@ -299,12 +328,22 @@ User query: ${prompt}`;
                                             {msg.time}
                                         </span>
                                         {msg.sender === "ai" && (
-                                            <button
-                                                onClick={() => speak(msg.text, msg.id)}
-                                                className={`p-1.5 rounded-full transition-all ${isSpeaking === msg.id ? "bg-gold text-deep-blue" : "hover:bg-white/10 text-gold/60 hover:text-gold"}`}
-                                            >
-                                                {isSpeaking === msg.id ? <VolumeX size={12} /> : <Volume2 size={12} />}
-                                            </button>
+                                            <div className="flex gap-2">
+                                                <button
+                                                    onClick={() => speak(msg.text, msg.id)}
+                                                    className={`p-1.5 rounded-full transition-all ${isSpeaking === msg.id ? "bg-gold text-deep-blue" : "hover:bg-white/10 text-gold/60 hover:text-gold"}`}
+                                                >
+                                                    {isSpeaking === msg.id ? <VolumeX size={12} /> : <Volume2 size={12} />}
+                                                </button>
+                                                {isSpeaking === msg.id && (
+                                                    <button
+                                                        onClick={() => isPaused ? resume() : pause()}
+                                                        className="p-1.5 rounded-full transition-all bg-gold text-deep-blue"
+                                                    >
+                                                        {isPaused ? <Play size={12} /> : <Pause size={12} />}
+                                                    </button>
+                                                )}
+                                            </div>
                                         )}
                                     </div>
                                 </div>

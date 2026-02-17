@@ -3,7 +3,7 @@
 import React, { useState, useMemo, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { dailyWisdomData } from "@/data/daily-wisdom";
-import { Sparkles, Quote, Bookmark, Share2, Flame, ArrowLeft, Search, Filter, Check, Volume2, VolumeX } from "lucide-react";
+import { Sparkles, Quote, Bookmark, Share2, Flame, ArrowLeft, Search, Filter, Check, Volume2, VolumeX, Pause, Play } from "lucide-react";
 import Link from "next/link";
 import { useVoice } from "@/hooks/useVoice";
 
@@ -28,7 +28,7 @@ export default function DailyWisdomPage() {
     const [searchQuery, setSearchQuery] = useState("");
     const [currentPage, setCurrentPage] = useState(1);
     const [isLoaded, setIsLoaded] = useState(false);
-    const { speak, isSpeaking } = useVoice();
+    const { speak, pause, resume, isSpeaking, isPaused } = useVoice();
 
     useEffect(() => {
         setIsLoaded(true);
@@ -244,12 +244,22 @@ export default function DailyWisdomPage() {
                                             >
                                                 {wisdom.sanskrit}
                                             </motion.h3>
-                                            <button
-                                                onClick={() => speak(wisdom.sanskrit, `${wisdom.id}-sanskrit`, "hi")}
-                                                className={`p-3 rounded-full transition-all border ${isSpeaking === `${wisdom.id}-sanskrit` ? "bg-gold text-deep-blue border-gold" : "bg-gold/5 text-gold border-gold/20 hover:bg-gold/20"}`}
-                                            >
-                                                {isSpeaking === `${wisdom.id}-sanskrit` ? <VolumeX size={16} /> : <Volume2 size={16} />}
-                                            </button>
+                                            <div className="flex gap-2">
+                                                <button
+                                                    onClick={() => speak(wisdom.sanskrit, `${wisdom.id}-sanskrit`, "hi")}
+                                                    className={`p-3 rounded-full transition-all border ${isSpeaking === `${wisdom.id}-sanskrit` ? "bg-gold text-deep-blue border-gold" : "bg-gold/5 text-gold border-gold/20 hover:bg-gold/20"}`}
+                                                >
+                                                    {isSpeaking === `${wisdom.id}-sanskrit` ? <VolumeX size={16} /> : <Volume2 size={16} />}
+                                                </button>
+                                                {isSpeaking === `${wisdom.id}-sanskrit` && (
+                                                    <button
+                                                        onClick={() => isPaused ? resume() : pause()}
+                                                        className="p-3 rounded-full transition-all border bg-gold/5 text-gold border-gold/20 hover:bg-gold/20"
+                                                    >
+                                                        {isPaused ? <Play size={16} /> : <Pause size={16} />}
+                                                    </button>
+                                                )}
+                                            </div>
                                         </div>
                                         <div className="flex justify-center gap-2">
                                             <div className="w-12 h-[2px] bg-gradient-to-r from-transparent to-gold/30" />
@@ -265,12 +275,22 @@ export default function DailyWisdomPage() {
                                             <div className="absolute top-0 left-[-2px] h-full w-[2px] bg-gradient-to-b from-gold via-saffron to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                                             <div className="flex justify-between items-center mb-4">
                                                 <h4 className="text-gold font-black uppercase tracking-[0.3em] text-[10px]">The Essence (हिंदी भाव)</h4>
-                                                <button
-                                                    onClick={() => speak(wisdom.hindi, `${wisdom.id}-hindi`, "hi")}
-                                                    className={`p-1.5 rounded-full transition-all ${isSpeaking === `${wisdom.id}-hindi` ? "bg-gold text-deep-blue" : "text-gold/40 hover:text-gold"}`}
-                                                >
-                                                    {isSpeaking === `${wisdom.id}-hindi` ? <VolumeX size={12} /> : <Volume2 size={12} />}
-                                                </button>
+                                                <div className="flex gap-2">
+                                                    <button
+                                                        onClick={() => speak(wisdom.hindi, `${wisdom.id}-hindi`, "hi")}
+                                                        className={`p-1.5 rounded-full transition-all ${isSpeaking === `${wisdom.id}-hindi` ? "bg-gold text-deep-blue" : "text-gold/40 hover:text-gold"}`}
+                                                    >
+                                                        {isSpeaking === `${wisdom.id}-hindi` ? <VolumeX size={12} /> : <Volume2 size={12} />}
+                                                    </button>
+                                                    {isSpeaking === `${wisdom.id}-hindi` && (
+                                                        <button
+                                                            onClick={() => isPaused ? resume() : pause()}
+                                                            className="p-1.5 rounded-full transition-all text-gold/40 hover:text-gold"
+                                                        >
+                                                            {isPaused ? <Play size={12} /> : <Pause size={12} />}
+                                                        </button>
+                                                    )}
+                                                </div>
                                             </div>
                                             <p className="text-xl md:text-2xl text-ivory/90 font-serif leading-relaxed italic">
                                                 "{wisdom.hindi}"
@@ -296,12 +316,22 @@ export default function DailyWisdomPage() {
                                                         <span className="text-saffron/80 text-xs font-bold uppercase tracking-[0.2em] border-b border-saffron/20 pb-2 w-fit">
                                                             {wisdom.modernContext}
                                                         </span>
-                                                        <button
-                                                            onClick={() => speak(wisdom.application, `${wisdom.id}-eng-app`, "en")}
-                                                            className={`p-1.5 rounded-full transition-all ${isSpeaking === `${wisdom.id}-eng-app` ? "bg-gold text-deep-blue" : "text-gold/40 hover:text-gold"}`}
-                                                        >
-                                                            {isSpeaking === `${wisdom.id}-eng-app` ? <VolumeX size={12} /> : <Volume2 size={12} />}
-                                                        </button>
+                                                        <div className="flex gap-2">
+                                                            <button
+                                                                onClick={() => speak(wisdom.application, `${wisdom.id}-eng-app`, "en")}
+                                                                className={`p-1.5 rounded-full transition-all ${isSpeaking === `${wisdom.id}-eng-app` ? "bg-gold text-deep-blue" : "text-gold/40 hover:text-gold"}`}
+                                                            >
+                                                                {isSpeaking === `${wisdom.id}-eng-app` ? <VolumeX size={12} /> : <Volume2 size={12} />}
+                                                            </button>
+                                                            {isSpeaking === `${wisdom.id}-eng-app` && (
+                                                                <button
+                                                                    onClick={() => isPaused ? resume() : pause()}
+                                                                    className="p-1.5 rounded-full transition-all text-gold/40 hover:text-gold"
+                                                                >
+                                                                    {isPaused ? <Play size={12} /> : <Pause size={12} />}
+                                                                </button>
+                                                            )}
+                                                        </div>
                                                     </div>
                                                     <p className="text-ivory font-sans text-lg leading-relaxed font-light">
                                                         {wisdom.application}
@@ -311,12 +341,22 @@ export default function DailyWisdomPage() {
                                                 <div className="pt-6 mt-6 border-t border-white/5 relative">
                                                     <div className="flex justify-between items-center mb-3">
                                                         <span className="text-[9px] text-gold/40 uppercase font-bold tracking-widest">Hindi Guidance</span>
-                                                        <button
-                                                            onClick={() => speak(wisdom.hindiApplication, `${wisdom.id}-hi-app`, "hi")}
-                                                            className={`p-1.5 rounded-full transition-all ${isSpeaking === `${wisdom.id}-hi-app` ? "bg-gold text-deep-blue" : "text-gold/40 hover:text-gold"}`}
-                                                        >
-                                                            {isSpeaking === `${wisdom.id}-hi-app` ? <VolumeX size={12} /> : <Volume2 size={12} />}
-                                                        </button>
+                                                        <div className="flex gap-2">
+                                                            <button
+                                                                onClick={() => speak(wisdom.hindiApplication, `${wisdom.id}-hi-app`, "hi")}
+                                                                className={`p-1.5 rounded-full transition-all ${isSpeaking === `${wisdom.id}-hi-app` ? "bg-gold text-deep-blue" : "text-gold/40 hover:text-gold"}`}
+                                                            >
+                                                                {isSpeaking === `${wisdom.id}-hi-app` ? <VolumeX size={12} /> : <Volume2 size={12} />}
+                                                            </button>
+                                                            {isSpeaking === `${wisdom.id}-hi-app` && (
+                                                                <button
+                                                                    onClick={() => isPaused ? resume() : pause()}
+                                                                    className="p-1.5 rounded-full transition-all text-gold/40 hover:text-gold"
+                                                                >
+                                                                    {isPaused ? <Play size={12} /> : <Pause size={12} />}
+                                                                </button>
+                                                            )}
+                                                        </div>
                                                     </div>
                                                     <p className="text-gold/70 font-serif text-base leading-relaxed">
                                                         {wisdom.hindiApplication}

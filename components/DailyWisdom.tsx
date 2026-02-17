@@ -15,12 +15,12 @@ const mockVerse = {
 };
 
 import { useVoice } from "@/hooks/useVoice";
-import { Volume2, VolumeX } from "lucide-react";
+import { Volume2, VolumeX, Pause, Play } from "lucide-react";
 
 export default function DailyWisdom() {
     const [isExpanded, setIsExpanded] = useState(false);
     const [streak, setStreak] = useState(7);
-    const { speak, isSpeaking } = useVoice();
+    const { speak, pause, resume, isSpeaking, isPaused } = useVoice();
 
     return (
         <section className="py-24 px-4 bg-ivory dark:bg-deep-blue/20 overflow-hidden">
@@ -72,12 +72,22 @@ export default function DailyWisdom() {
                                 <div className="w-16 h-16 rounded-2xl bg-gold/20 backdrop-blur-xl border border-gold/30 flex items-center justify-center text-gold shadow-2xl">
                                     <Quote size={32} />
                                 </div>
-                                <button
-                                    onClick={() => speak(mockVerse.verse, "daily-sans", "hi")}
-                                    className={`w-16 h-16 rounded-2xl backdrop-blur-xl border flex items-center justify-center shadow-2xl transition-all ${isSpeaking === "daily-sans" ? "bg-gold text-deep-blue border-gold" : "bg-white/10 text-gold border-white/20 hover:bg-white/20"}`}
-                                >
-                                    {isSpeaking === "daily-sans" ? <VolumeX size={28} /> : <Volume2 size={28} />}
-                                </button>
+                                <div className="flex gap-4">
+                                    <button
+                                        onClick={() => speak(mockVerse.verse, "daily-sans", "hi")}
+                                        className={`w-16 h-16 rounded-2xl backdrop-blur-xl border flex items-center justify-center shadow-2xl transition-all ${isSpeaking === "daily-sans" ? "bg-gold text-deep-blue border-gold" : "bg-white/10 text-gold border-white/20 hover:bg-white/20"}`}
+                                    >
+                                        {isSpeaking === "daily-sans" ? <VolumeX size={28} /> : <Volume2 size={28} />}
+                                    </button>
+                                    {isSpeaking === "daily-sans" && (
+                                        <button
+                                            onClick={() => isPaused ? resume() : pause()}
+                                            className="w-16 h-16 rounded-2xl backdrop-blur-xl border bg-white/10 text-gold border-white/20 hover:bg-white/20 flex items-center justify-center shadow-2xl transition-all"
+                                        >
+                                            {isPaused ? <Play size={28} /> : <Pause size={28} />}
+                                        </button>
+                                    )}
+                                </div>
                             </div>
                         </div>
 
@@ -113,12 +123,22 @@ export default function DailyWisdom() {
                                             <h4 className="flex items-center gap-2 text-saffron font-black text-[10px] uppercase tracking-widest opacity-60 group-hover/item:opacity-100 transition-opacity">
                                                 <BookOpen size={14} /> Essence
                                             </h4>
-                                            <button
-                                                onClick={() => speak(mockVerse.english, "daily-eng", "en")}
-                                                className={`p-1.5 rounded-lg transition-all ${isSpeaking === "daily-eng" ? "bg-gold text-deep-blue" : "text-gold/40 hover:text-gold"}`}
-                                            >
-                                                {isSpeaking === "daily-eng" ? <VolumeX size={14} /> : <Volume2 size={14} />}
-                                            </button>
+                                            <div className="flex gap-2">
+                                                <button
+                                                    onClick={() => speak(mockVerse.english, "daily-eng", "en")}
+                                                    className={`p-1.5 rounded-lg transition-all ${isSpeaking === "daily-eng" ? "bg-gold text-deep-blue" : "text-gold/40 hover:text-gold"}`}
+                                                >
+                                                    {isSpeaking === "daily-eng" ? <VolumeX size={14} /> : <Volume2 size={14} />}
+                                                </button>
+                                                {isSpeaking === "daily-eng" && (
+                                                    <button
+                                                        onClick={() => isPaused ? resume() : pause()}
+                                                        className="p-1.5 rounded-lg transition-all text-gold/40 hover:text-gold"
+                                                    >
+                                                        {isPaused ? <Play size={14} /> : <Pause size={14} />}
+                                                    </button>
+                                                )}
+                                            </div>
                                         </div>
                                         <p className="text-lg text-deep-blue/80 dark:text-ivory/80 font-light leading-relaxed italic">
                                             "{mockVerse.english}"
@@ -139,12 +159,22 @@ export default function DailyWisdom() {
                                                 <div className="absolute top-4 right-6 text-5xl opacity-[0.05] pointer-events-none">🕉️</div>
                                                 <div className="flex justify-between items-center mb-3">
                                                     <h4 className="text-gold font-black text-[10px] uppercase tracking-widest">Practical Application</h4>
-                                                    <button
-                                                        onClick={() => speak(mockVerse.applyText, "daily-apply", "en")}
-                                                        className={`p-1.5 rounded-lg transition-all ${isSpeaking === "daily-apply" ? "bg-gold text-deep-blue" : "text-gold/40 hover:text-gold"}`}
-                                                    >
-                                                        {isSpeaking === "daily-apply" ? <VolumeX size={14} /> : <Volume2 size={14} />}
-                                                    </button>
+                                                    <div className="flex gap-2">
+                                                        <button
+                                                            onClick={() => speak(mockVerse.applyText, "daily-apply", "en")}
+                                                            className={`p-1.5 rounded-lg transition-all ${isSpeaking === "daily-apply" ? "bg-gold text-deep-blue" : "text-gold/40 hover:text-gold"}`}
+                                                        >
+                                                            {isSpeaking === "daily-apply" ? <VolumeX size={14} /> : <Volume2 size={14} />}
+                                                        </button>
+                                                        {isSpeaking === "daily-apply" && (
+                                                            <button
+                                                                onClick={() => isPaused ? resume() : pause()}
+                                                                className="p-1.5 rounded-lg transition-all text-gold/40 hover:text-gold"
+                                                            >
+                                                                {isPaused ? <Play size={14} /> : <Pause size={14} />}
+                                                            </button>
+                                                        )}
+                                                    </div>
                                                 </div>
                                                 <p className="text-xl text-deep-blue dark:text-ivory leading-relaxed font-medium">
                                                     {mockVerse.applyText}

@@ -51,10 +51,10 @@ const lessons = [
 ];
 
 import { useVoice } from "@/hooks/useVoice";
-import { Volume2, VolumeX } from "lucide-react";
+import { Volume2, VolumeX, Pause, Play } from "lucide-react";
 
 export default function LifeLessonsSection() {
-    const { speak, isSpeaking } = useVoice();
+    const { speak, pause, resume, isSpeaking, isPaused } = useVoice();
 
     return (
         <section className="py-24 px-4 bg-ivory/50 dark:bg-deep-blue/10">
@@ -96,16 +96,30 @@ export default function LifeLessonsSection() {
                             </Link>
 
                             {/* Absolute positioned voice button to avoid link conflict */}
-                            <button
-                                onClick={(e) => {
-                                    e.preventDefault();
-                                    e.stopPropagation();
-                                    speak(lesson.description, `card-${lesson.slug}`, "en");
-                                }}
-                                className={`absolute top-6 right-6 p-2 rounded-xl transition-all z-10 ${isSpeaking === `card-${lesson.slug}` ? "bg-gold text-deep-blue" : "bg-white/50 dark:bg-white/5 text-gold/60 hover:text-gold opacity-0 group-hover:opacity-100"}`}
-                            >
-                                {isSpeaking === `card-${lesson.slug}` ? <VolumeX size={16} /> : <Volume2 size={16} />}
-                            </button>
+                            <div className="absolute top-6 right-6 flex gap-2 z-10">
+                                <button
+                                    onClick={(e) => {
+                                        e.preventDefault();
+                                        e.stopPropagation();
+                                        speak(lesson.description, `card-${lesson.slug}`, "en");
+                                    }}
+                                    className={`p-2 rounded-xl transition-all ${isSpeaking === `card-${lesson.slug}` ? "bg-gold text-deep-blue" : "bg-white/50 dark:bg-white/5 text-gold/60 hover:text-gold opacity-0 group-hover:opacity-100"}`}
+                                >
+                                    {isSpeaking === `card-${lesson.slug}` ? <VolumeX size={16} /> : <Volume2 size={16} />}
+                                </button>
+                                {isSpeaking === `card-${lesson.slug}` && (
+                                    <button
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            e.stopPropagation();
+                                            isPaused ? resume() : pause();
+                                        }}
+                                        className="p-2 rounded-xl bg-gold text-deep-blue transition-all"
+                                    >
+                                        {isPaused ? <Play size={16} /> : <Pause size={16} />}
+                                    </button>
+                                )}
+                            </div>
                         </div>
                     ))}
                 </div>
